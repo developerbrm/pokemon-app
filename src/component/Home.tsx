@@ -1,5 +1,15 @@
-const Home = () => {
-  return <div>Home Comp</div>;
-};
+import { useEffect } from 'react'
+import { useAppDispatch } from '../redux/store'
+import { fetchPokemonList } from '../redux/reducers/pokemon/pokemonReducer'
 
-export default Home;
+const Home = () => {
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    dispatch(fetchPokemonList(25))
+  })
+
+  return <div>Home Comp</div>
+}
+
+export default Home
