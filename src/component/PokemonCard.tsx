@@ -3,7 +3,7 @@ import { NavLink } from 'react-router'
 import { addPokemonDetails } from '../redux/reducers/pokemon/pokemonReducer'
 import { useAppDispatch } from '../redux/store'
 import { getDetailsPageRoute } from '../Routes/routes'
-import { fetchSinglePokemon } from '../utilities/api-helpers'
+import { fetchPokemonDetails } from '../utilities/api-helpers'
 import { PokemonListResponseItem } from '../utilities/models'
 
 interface PokemonCard {
@@ -15,7 +15,7 @@ const PokemonCard = (props: PokemonCard) => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    fetchSinglePokemon(pokemon.name)
+    fetchPokemonDetails(pokemon.name)
       .then((res) => {
         dispatch(addPokemonDetails(res))
       })

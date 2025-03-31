@@ -20,7 +20,7 @@ export const fetchPokemonList = createAsyncThunk(
       })
 )
 
-export const fetchSinglePokemon = async (id: string) =>
+export const fetchPokemonDetails = async (id: string) =>
   axios
     .get<PokemonData>(GET_SINGLE_POKEMON(id))
     .then((res) => res.data)
