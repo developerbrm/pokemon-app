@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { PokemonData, PokemonListResponse } from './models'
 
-export const LIST_LIMIT = 20
+export const LIST_LIMIT = 100
 
 export const GET_SINGLE_POKEMON = (id: string) =>
   `https://pokeapi.co/api/v2/pokemon/${id}`

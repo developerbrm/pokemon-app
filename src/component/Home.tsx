@@ -3,14 +3,14 @@ import { useAppDispatch, useAppSelector } from '../redux/store'
 import Spinner from './Spinner'
 import PokemonCard from './PokemonCard'
 import Heading from './Heading'
-import { fetchPokemonList } from '../utilities/api-helpers'
+import { fetchPokemonList, LIST_LIMIT } from '../utilities/api-helpers'
 
 const Home = () => {
   const dispatch = useAppDispatch()
   const { pokemonListState } = useAppSelector((state) => state.pokemonReducer)
 
   useEffect(() => {
-    dispatch(fetchPokemonList(30))
+    dispatch(fetchPokemonList(LIST_LIMIT))
   }, [dispatch])
 
   if (pokemonListState.loading && !pokemonListState.loaded) {
