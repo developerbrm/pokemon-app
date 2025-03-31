@@ -4,3 +4,5 @@ export const ROUTES = {
   HOME: BASE_URL,
   DETAILS: `${BASE_URL}/details/:id`,
 }
+
+export const getDetailsPageRoute = (id: string) => `${BASE_URL}/details/${id}`

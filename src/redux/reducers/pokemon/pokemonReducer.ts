@@ -1,36 +1,25 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 import { createInitialState } from '../../../utilities'
-import axios from 'axios'
-import { GET_POKEMON_LIST } from '../../../utilities/api-helpers'
+import { fetchPokemonList } from '../../../utilities/api-helpers'
 import {
   InitialUIState,
-  PokemonDetailsResponse,
+  PokemonData,
   PokemonListResponse,
 } from '../../../utilities/models'
 
-export const fetchPokemonList = createAsyncThunk(
-  'pokemon/fetchPokemonList',
-  async (limit?: number) =>
-    axios
-      .get<PokemonListResponse>(GET_POKEMON_LIST(limit))
-      .then((res) => res.data)
-      .catch((err) => {
-        throw new Error(err)
-      })
-)
+interface PokemonListState extends InitialUIState {
+  data: PokemonListResponse
+}
 
-interface PokemonListState extends InitialUIState {}
-
-type PokemonDetailsState = Record<string, PokemonDetailsResponse>
+type PokemonDetailsState = Record<string, PokemonData>
 
 interface InitialState {
   pokemonListState: PokemonListState
   pokemonDetailsState: PokemonDetailsState
 }
 
-// Define the initial state using that type
-
-const pokemonListState: PokemonListState = createInitialState()
+const pokemonListState: PokemonListState =
+  createInitialState() as PokemonListState
 const pokemonDetailsState: PokemonDetailsState = {}
 
 const initialState: InitialState = {
@@ -43,11 +32,11 @@ export const counterSlice = createSlice({
   initialState,
   reducers: {
     addPokemonDetails: (state, action) => {
-      state.pokemonDetailsState[action.payload.id] = action.payload
+      state.pokemonDetailsState[action.payload.name] = action.payload
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchPokemonList.pending, (state, action) => {
+    builder.addCase(fetchPokemonList.pending, (state) => {
       state.pokemonListState.loading = true
     })
     builder.addCase(fetchPokemonList.fulfilled, (state, action) => {
