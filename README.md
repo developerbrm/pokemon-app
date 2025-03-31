@@ -1,1 +1,1 @@
-<img width="1778" alt="project plan" src="https://github.com/user-attachments/assets/1e6f77e2-1590-4bcc-ae6f-dbe71edc656e" />
+<img width="1772" alt="project planning" src="https://github.com/user-attachments/assets/069ddc7c-a4c4-4757-a244-1e42680dbfb7" />
