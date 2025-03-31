@@ -1,12 +1,8 @@
-import './App.css';
-import RoutesProvider from './Routes/RoutesProvider';
+import './css/index.css'
+import RoutesProvider from './Routes/RoutesProvider'
 
 function App() {
-  return (
-    <>
-      <RoutesProvider />
-    </>
-  );
+  return <RoutesProvider />
 }
 
-export default App;
+export default App

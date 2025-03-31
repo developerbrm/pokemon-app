@@ -1,8 +1,8 @@
-import { createBrowserRouter, RouterProvider } from 'react-router';
-import { ROUTES } from './routes';
-import Home from '../component/Home';
-import Details from '../component/Details';
-import Component404 from '../component/Component404';
+import { createBrowserRouter, RouterProvider } from 'react-router'
+import Component404 from '../component/Component404'
+import Details from '../component/Details'
+import Home from '../component/Home'
+import { ROUTES } from './routes'
 
 const router = createBrowserRouter([
   {
@@ -17,10 +17,10 @@ const router = createBrowserRouter([
     path: '*',
     Component: Component404,
   },
-]);
+])
 
 const RoutesProvider = () => {
-  return <RouterProvider router={router} />;
-};
+  return <RouterProvider router={router} />
+}
 
-export default RoutesProvider;
+export default RoutesProvider
