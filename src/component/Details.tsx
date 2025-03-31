@@ -30,7 +30,7 @@ const Details = () => {
       <div className="mr-auto w-fit text-start">
         <Heading text={name} />
       </div>
-      <div className="grid grid-cols-[1fr_300px]">
+      <div className="grid grid-cols-[1fr_400px]">
         <div className="grid items-start gap-2 text-slate-600">
           <div className="flex flex-wrap items-center gap-2 gap-x-6">
             <div>
@@ -84,8 +84,9 @@ const Details = () => {
           </div>
         </div>
 
-        <div className="aspect-square w-full rounded-full overflow-ellipsis">
+        <div className="aspect-square w-full rounded-full">
           <img
+            className="h-full w-full object-contain drop-shadow-md"
             src={pokemon?.sprites.other['official-artwork'].front_default}
             alt={pokemon?.name}
           />
