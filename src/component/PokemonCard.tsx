@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router'
-import useFetchPokemonDetails from '../hooks/useFetchPokemonDetails'
 import { getDetailsPageRoute } from '../Routes/routes'
 import { PokemonListResponseItem } from '../utilities/models'
+import RenderOtherCardInfo from './RenderOtherCardInfo'
 
 interface PokemonCard {
   pokemon: PokemonListResponseItem
@@ -10,14 +10,14 @@ interface PokemonCard {
 const PokemonCard = (props: PokemonCard) => {
   const { pokemon } = props
 
-  useFetchPokemonDetails(pokemon?.name)
-
   return (
     <NavLink to={getDetailsPageRoute(pokemon.name)}>
-      <div className="grid h-[100px] rounded-md bg-slate-200 p-5 shadow-sm">
-        <h3 className="text-lg font-medium text-slate-800 capitalize">
-          {pokemon.name}
+      <div className="grid h-fit grid-flow-col justify-between rounded-md bg-slate-200 p-5 shadow-sm">
+        <h3 className="text-2xl font-bold text-slate-900 capitalize">
+          {pokemon?.name}
         </h3>
+
+        <RenderOtherCardInfo name={pokemon?.name} />
       </div>
     </NavLink>
   )

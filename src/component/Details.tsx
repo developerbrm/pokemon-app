@@ -1,8 +1,8 @@
 import { useParams } from 'react-router'
-import Heading from './Heading'
-import { useAppSelector } from '../redux/store'
-import Spinner from './Spinner'
 import useFetchPokemonDetails from '../hooks/useFetchPokemonDetails'
+import { useAppSelector } from '../redux/store'
+import Heading from './Heading'
+import Spinner from './Spinner'
 
 const Details = () => {
   const params = useParams<{ name: string }>()
@@ -11,13 +11,10 @@ const Details = () => {
   const pokemon = useAppSelector(
     (state) => state.pokemonReducer.pokemonDetailsState?.[name]
   )
-  useFetchPokemonDetails(name)
 
-  const pokemonListState = useAppSelector(
-    (state) => state.pokemonReducer.pokemonDetailsState
-  )
+  const pokemonDetailsState = useFetchPokemonDetails(name)
 
-  if (pokemonListState.loading && !pokemonListState.loaded) {
+  if (pokemonDetailsState.loading && !pokemonDetailsState.loaded) {
     return (
       <div className="grid h-screen w-screen place-content-center">
         <Spinner />
