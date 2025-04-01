@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef } from 'react'
-import { NavLink, useParams } from 'react-router'
+import { NavLink, ScrollRestoration, useParams } from 'react-router'
 import useFetchPokemonDetails from '../hooks/useFetchPokemonDetails'
 import { useAppDispatch, useAppSelector } from '../redux/store'
 import { ROUTES } from '../Routes/routes'
@@ -16,12 +16,12 @@ const Details = () => {
   const containerRef = useRef<HTMLDivElement>(null)
 
   const scrollToTop = useCallback(() => {
-    if (containerRef.current) {
-      containerRef.current.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-      })
-    }
+    // if (containerRef.current) {
+    //   containerRef.current.scrollTo({
+    //     top: 0,
+    //     behavior: 'smooth',
+    //   })
+    // }
   }, [containerRef])
 
   const pokemon = useAppSelector(
@@ -60,10 +60,7 @@ const Details = () => {
     : []
 
   return (
-    <section
-      ref={containerRef}
-      className="mx-auto h-screen max-w-7xl overflow-y-auto p-5"
-    >
+    <section ref={containerRef} className="mx-auto max-w-7xl p-5">
       <div className="mr-auto w-fit text-start">
         <Heading text={name} />
       </div>
@@ -156,6 +153,8 @@ const Details = () => {
           </NavLink>
         </div>
       </div>
+
+      <ScrollRestoration />
     </section>
   )
 }

@@ -1,4 +1,5 @@
 import { Suspense, useEffect, useState } from 'react'
+import { ScrollRestoration } from 'react-router'
 import { useAppDispatch, useAppSelector } from '../redux/store'
 import { fetchPokemonList, LIST_LIMIT } from '../utilities/api-helpers'
 import Heading from './Heading'
@@ -52,6 +53,8 @@ const Home = () => {
       >
         No Results To Show
       </div>
+
+      <ScrollRestoration />
     </div>
   )
 }
