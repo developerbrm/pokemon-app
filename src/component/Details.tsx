@@ -130,8 +130,10 @@ const Details = () => {
         </div>
       </div>
 
-      <div className="mt-10 md:mt-18">
-        <div className="mr-auto w-fit text-start">
+      <div className={`mt-10 md:mt-18`}>
+        <div
+          className={`${!featuredPokemonArr?.length && 'hidden'} mr-auto w-fit text-start`}
+        >
           <Heading text="Similar Pokemons" />
         </div>
 
