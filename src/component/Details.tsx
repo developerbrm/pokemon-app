@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef } from 'react'
 import { NavLink, useParams } from 'react-router'
 import useFetchPokemonDetails from '../hooks/useFetchPokemonDetails'
 import { useAppDispatch, useAppSelector } from '../redux/store'
@@ -13,6 +13,16 @@ const Details = () => {
   const name = params.name as string
   const { pokemonListState } = useAppSelector((state) => state.pokemonReducer)
   const dispatch = useAppDispatch()
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  const scrollToTop = useCallback(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      })
+    }
+  }, [containerRef])
 
   const pokemon = useAppSelector(
     (state) => state.pokemonReducer.pokemonDetailsState?.[name]
@@ -26,6 +36,10 @@ const Details = () => {
     dispatch(fetchPokemonList(LIST_LIMIT))
   }, [dispatch, pokemonDetailsState.loaded])
 
+  useLayoutEffect(() => {
+    scrollToTop()
+  }, [scrollToTop])
+
   if (pokemonDetailsState.loading && !pokemonDetailsState.loaded) {
     return (
       <div className="grid h-screen w-screen place-content-center">
@@ -34,19 +48,22 @@ const Details = () => {
     )
   }
 
-  const currentPokemonIndex = pokemonListState.data?.results?.findIndex(
-    (pokemon) => pokemon.name === name
-  )
+  const nextPokemonIndex =
+    pokemonListState.data?.results?.findIndex(
+      (pokemon) => pokemon.name === name
+    ) + 1
 
-  const featuredPokemonArr = currentPokemonIndex
-    ? pokemonListState.data?.results?.slice(
-        currentPokemonIndex,
-        currentPokemonIndex + 3
-      )
+  const featuredPokemonArr = nextPokemonIndex
+    ? pokemonListState.data?.results
+        ?.slice(nextPokemonIndex, nextPokemonIndex + 3)
+        .filter((pokemon) => pokemon.name !== name)
     : []
 
   return (
-    <section id={name} className="mx-auto max-w-7xl p-5">
+    <section
+      ref={containerRef}
+      className="mx-auto h-screen max-w-7xl overflow-y-auto p-5"
+    >
       <div className="mr-auto w-fit text-start">
         <Heading text={name} />
       </div>
@@ -124,6 +141,7 @@ const Details = () => {
               key={pokemon.name}
               searchKeyword={''}
               pokemon={pokemon}
+              handleOnClick={scrollToTop}
             />
           ))}
         </div>

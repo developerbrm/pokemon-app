@@ -6,4 +6,4 @@ export const ROUTES = {
 }
 
 export const getDetailsPageRoute = (name: string) =>
-  `${BASE_URL}/details/${name}#${name}`
+  `${BASE_URL}/details/${name}`
