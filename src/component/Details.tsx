@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useLayoutEffect, useRef } from 'react'
-import { NavLink, useParams } from 'react-router'
+import { useCallback, useEffect, useRef } from 'react'
+import { NavLink, ScrollRestoration, useParams } from 'react-router'
 import useFetchPokemonDetails from '../hooks/useFetchPokemonDetails'
 import { useAppDispatch, useAppSelector } from '../redux/store'
 import { ROUTES } from '../Routes/routes'
@@ -16,12 +16,12 @@ const Details = () => {
   const containerRef = useRef<HTMLDivElement>(null)
 
   const scrollToTop = useCallback(() => {
-    if (containerRef.current) {
-      containerRef.current.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-      })
-    }
+    // if (containerRef.current) {
+    //   containerRef.current.scrollTo({
+    //     top: 0,
+    //     behavior: 'smooth',
+    //   })
+    // }
   }, [containerRef])
 
   const pokemon = useAppSelector(
@@ -36,7 +36,7 @@ const Details = () => {
     dispatch(fetchPokemonList(LIST_LIMIT))
   }, [dispatch, pokemonDetailsState.loaded])
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     scrollToTop()
   }, [scrollToTop])
 
@@ -60,14 +60,11 @@ const Details = () => {
     : []
 
   return (
-    <section
-      ref={containerRef}
-      className="mx-auto h-screen max-w-7xl overflow-y-auto p-5"
-    >
+    <section ref={containerRef} className="mx-auto max-w-7xl p-5">
       <div className="mr-auto w-fit text-start">
         <Heading text={name} />
       </div>
-      <div className="grid lg:grid-cols-[1fr_auto]">
+      <div className="grid gap-5 lg:grid-cols-[1fr_auto]">
         <div className="mx-auto aspect-square w-[300px] rounded-full bg-gradient-to-b from-lime-300 to-white to-[300px] md:w-[350px] lg:order-2 lg:w-[400px]">
           <img
             className="h-full w-full object-contain drop-shadow-md"
@@ -130,8 +127,10 @@ const Details = () => {
         </div>
       </div>
 
-      <div className="mt-10 md:mt-18">
-        <div className="mr-auto w-fit text-start">
+      <div className={`mt-10 md:mt-18`}>
+        <div
+          className={`${!featuredPokemonArr?.length && 'hidden'} mr-auto w-fit text-start`}
+        >
           <Heading text="Similar Pokemons" />
         </div>
 
@@ -154,6 +153,8 @@ const Details = () => {
           </NavLink>
         </div>
       </div>
+
+      <ScrollRestoration />
     </section>
   )
 }

@@ -1,5 +1,6 @@
 import useFetchPokemonDetails from '../hooks/useFetchPokemonDetails'
 import { useAppSelector } from '../redux/store'
+import Spinner from './Spinner'
 
 const RenderOtherCardInfo = ({ name }: { name: string }) => {
   const pokemonDetailsState = useFetchPokemonDetails(name)
@@ -10,8 +11,8 @@ const RenderOtherCardInfo = ({ name }: { name: string }) => {
 
   if (pokemonDetailsState.loading && !pokemonDetailsState.loaded) {
     return (
-      <div className="grid h-screen w-screen place-content-center">
-        Loading...
+      <div className="mr-5 grid place-content-center">
+        <Spinner svgStyles="!h-15 !w-15" />
       </div>
     )
   }

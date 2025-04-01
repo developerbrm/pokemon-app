@@ -1,4 +1,5 @@
 import { Suspense, useEffect, useState } from 'react'
+import { ScrollRestoration } from 'react-router'
 import { useAppDispatch, useAppSelector } from '../redux/store'
 import { fetchPokemonList, LIST_LIMIT } from '../utilities/api-helpers'
 import Heading from './Heading'
@@ -34,7 +35,7 @@ const Home = () => {
 
         <input
           value={searchKeyword}
-          onChange={(e) => setSearchKeyword(e.target.value)}
+          onChange={(e) => setSearchKeyword(e.target.value.trim())}
           type="text"
           placeholder="type to search"
           className="block w-full rounded-md border-2 border-slate-600 p-4 py-2 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out outline-none focus:border-sky-500 md:max-w-xs"
@@ -52,6 +53,8 @@ const Home = () => {
       >
         No Results To Show
       </div>
+
+      <ScrollRestoration />
     </div>
   )
 }
