@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { NavLink, useParams } from 'react-router'
 import useFetchPokemonDetails from '../hooks/useFetchPokemonDetails'
 import { useAppDispatch, useAppSelector } from '../redux/store'
@@ -36,7 +36,7 @@ const Details = () => {
     dispatch(fetchPokemonList(LIST_LIMIT))
   }, [dispatch, pokemonDetailsState.loaded])
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     scrollToTop()
   }, [scrollToTop])
 
