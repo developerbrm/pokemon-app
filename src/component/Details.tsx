@@ -23,12 +23,12 @@ const Details = () => {
   }
 
   return (
-    <div className="mx-auto max-w-7xl p-5">
+    <div className="mx-auto h-screen max-w-7xl overflow-y-auto p-5">
       <div className="mr-auto w-fit text-start">
         <Heading text={name} />
       </div>
       <div className="grid lg:grid-cols-[1fr_auto]">
-        <div className="aspect-square w-[300px] rounded-full md:w-[350px] lg:order-2 lg:w-[400px]">
+        <div className="aspect-square w-[300px] rounded-full bg-gradient-to-b from-lime-300 to-white to-[300px] md:w-[350px] lg:order-2 lg:w-[400px]">
           <img
             className="h-full w-full object-contain drop-shadow-md"
             src={pokemon?.sprites.other['official-artwork'].front_default}
@@ -68,7 +68,7 @@ const Details = () => {
               {pokemon?.abilities.map((ability) => (
                 <span
                   key={ability.ability.name}
-                  className="flex gap-2 rounded-md bg-blue-50 p-2 py-1 font-medium text-blue-500"
+                  className="flex gap-2 rounded-md bg-blue-100 p-2 py-1 font-medium text-blue-500"
                 >
                   {ability.ability.name}
                 </span>
@@ -81,7 +81,7 @@ const Details = () => {
             {pokemon?.moves.map((move) => (
               <span
                 key={move.move.name}
-                className="flex gap-2 rounded-md bg-blue-50 p-2 py-1 font-medium text-blue-500"
+                className="flex gap-2 rounded-md bg-blue-100 p-2 py-1 font-medium text-blue-500"
               >
                 {move.move.name}
               </span>
