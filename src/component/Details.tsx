@@ -1,18 +1,30 @@
-import { useParams } from 'react-router'
+import { useEffect } from 'react'
+import { NavLink, useParams } from 'react-router'
 import useFetchPokemonDetails from '../hooks/useFetchPokemonDetails'
-import { useAppSelector } from '../redux/store'
+import { useAppDispatch, useAppSelector } from '../redux/store'
+import { ROUTES } from '../Routes/routes'
+import { fetchPokemonList, LIST_LIMIT } from '../utilities/api-helpers'
 import Heading from './Heading'
+import PokemonCard from './PokemonCard'
 import Spinner from './Spinner'
 
 const Details = () => {
   const params = useParams<{ name: string }>()
   const name = params.name as string
+  const { pokemonListState } = useAppSelector((state) => state.pokemonReducer)
+  const dispatch = useAppDispatch()
 
   const pokemon = useAppSelector(
     (state) => state.pokemonReducer.pokemonDetailsState?.[name]
   )
 
   const pokemonDetailsState = useFetchPokemonDetails(name)
+
+  useEffect(() => {
+    if (pokemonDetailsState.loaded) return
+
+    dispatch(fetchPokemonList(LIST_LIMIT))
+  }, [dispatch, pokemonDetailsState.loaded])
 
   if (pokemonDetailsState.loading && !pokemonDetailsState.loaded) {
     return (
@@ -22,13 +34,24 @@ const Details = () => {
     )
   }
 
+  const currentPokemonIndex = pokemonListState.data?.results?.findIndex(
+    (pokemon) => pokemon.name === name
+  )
+
+  const featuredPokemonArr = currentPokemonIndex
+    ? pokemonListState.data?.results?.slice(
+        currentPokemonIndex,
+        currentPokemonIndex + 3
+      )
+    : []
+
   return (
-    <div className="mx-auto h-screen max-w-7xl overflow-y-auto p-5">
+    <section id={name} className="mx-auto max-w-7xl p-5">
       <div className="mr-auto w-fit text-start">
         <Heading text={name} />
       </div>
       <div className="grid lg:grid-cols-[1fr_auto]">
-        <div className="aspect-square w-[300px] rounded-full bg-gradient-to-b from-lime-300 to-white to-[300px] md:w-[350px] lg:order-2 lg:w-[400px]">
+        <div className="mx-auto aspect-square w-[300px] rounded-full bg-gradient-to-b from-lime-300 to-white to-[300px] md:w-[350px] lg:order-2 lg:w-[400px]">
           <img
             className="h-full w-full object-contain drop-shadow-md"
             src={pokemon?.sprites.other['official-artwork'].front_default}
@@ -89,7 +112,31 @@ const Details = () => {
           </div>
         </div>
       </div>
-    </div>
+
+      <div className="mt-10 md:mt-18">
+        <div className="mr-auto w-fit text-start">
+          <Heading text="Similar Pokemons" />
+        </div>
+
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {featuredPokemonArr?.map((pokemon) => (
+            <PokemonCard
+              key={pokemon.name}
+              searchKeyword={''}
+              pokemon={pokemon}
+            />
+          ))}
+        </div>
+        <div className="mx-auto mt-10 flex justify-center md:mt-18">
+          <NavLink
+            className="mx-auto w-fit rounded-md bg-blue-50 p-4 py-2 font-medium text-blue-500 transition hover:bg-blue-500 hover:text-white"
+            to={ROUTES.HOME}
+          >
+            Back to home
+          </NavLink>
+        </div>
+      </div>
+    </section>
   )
 }
 
