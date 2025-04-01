@@ -2,7 +2,10 @@
 
 This project is a simple React application that shows a list of Pokémon.
 
-<img width="1772" alt="project planning" src="https://github.com/user-attachments/assets/069ddc7c-a4c4-4757-a244-1e42680dbfb7" />
+![image](https://github.com/user-attachments/assets/ea8fb0f5-b04d-400c-8fc5-37c6c5bc61a4)
+![image](https://github.com/user-attachments/assets/d7f0a09f-04d0-4462-a5b1-cdba676e4507)
+<img width="1772" alt="shapes at 25-04-01 12 27 26" src="https://github.com/user-attachments/assets/6a0f3e9d-c120-4fe7-a1ef-190c470b436d" />
+
 
 ## How to use
 
@@ -17,7 +20,7 @@ Bun is a fast, modern package manager that is designed to work well with modern 
 
 ## How to deploy
 
-the deployment is being handled by github actions
+The deployment is being handled by github actions
 
 ## License
 
