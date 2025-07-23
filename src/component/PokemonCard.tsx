@@ -4,24 +4,27 @@ import { getDetailsPageRoute } from '../Routes/routes'
 import RenderOtherCardInfo from './RenderOtherCardInfo'
 
 interface PokemonCard {
-  pokemon: PokemonOtherCardInfoData
+  otherCardInfo: PokemonOtherCardInfoData
   searchKeyword: string
   handleOnClick?: () => void
 }
 
 const PokemonCard = (props: PokemonCard) => {
-  const { pokemon, searchKeyword, handleOnClick } = props
+  const { otherCardInfo, searchKeyword, handleOnClick } = props
 
-  if (!pokemon.name.includes(searchKeyword)) return null
+  if (!otherCardInfo.name.includes(searchKeyword)) return null
 
   return (
-    <NavLink onClick={handleOnClick} to={getDetailsPageRoute(pokemon.name)}>
+    <NavLink
+      onClick={handleOnClick}
+      to={getDetailsPageRoute(otherCardInfo.name)}
+    >
       <div className="grid h-[200px] grid-flow-col justify-between rounded-md bg-slate-200 p-5 shadow-sm">
         <h3 className="text-2xl font-bold text-slate-900 capitalize">
-          {pokemon?.name}
+          {otherCardInfo?.name}
         </h3>
 
-        <RenderOtherCardInfo name={pokemon?.name} />
+        <RenderOtherCardInfo {...otherCardInfo} />
       </div>
     </NavLink>
   )

@@ -139,7 +139,7 @@ const Details = () => {
             <PokemonCard
               key={pokemon.name}
               searchKeyword={''}
-              pokemon={pokemon}
+              otherCardInfo={pokemon}
               handleOnClick={scrollToTop}
             />
           ))}

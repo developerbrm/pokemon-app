@@ -40,15 +40,17 @@ const Home = () => {
           className="block w-full rounded-md border-2 border-slate-600 p-4 py-2 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out outline-none focus:border-sky-500 md:max-w-xs"
         />
       </div>
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-5 p-5 md:grid-cols-2 lg:grid-cols-3">
+      <div className="peer mx-auto grid max-w-7xl grid-cols-1 gap-5 p-5 md:grid-cols-2 lg:grid-cols-3">
         {data?.otherCardInfo.map((pokemon) => (
-          <Suspense key={pokemon.name} fallback={<Spinner />}>
-            <PokemonCard searchKeyword={searchKeyword} pokemon={pokemon} />
-          </Suspense>
+          <PokemonCard
+            key={pokemon.name}
+            searchKeyword={searchKeyword}
+            otherCardInfo={pokemon}
+          />
         ))}
       </div>
       <div
-        className={`grid text-center text-2xl font-bold text-slate-800 ${showNoData ? '' : 'hidden'}`}
+        className={`grid hidden text-center text-2xl font-bold text-slate-800 peer-empty:block`}
       >
         No Results To Show
       </div>
