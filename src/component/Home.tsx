@@ -1,34 +1,33 @@
-import { Suspense, useEffect, useState } from 'react'
+import { useSuspenseQuery } from '@tanstack/react-query'
+import { Suspense, useState } from 'react'
 import { ScrollRestoration } from 'react-router'
-import { useAppDispatch, useAppSelector } from '../redux/store'
-import { fetchPokemonList, LIST_LIMIT } from '../utilities/api-helpers'
+import { getPokemonList } from '../utilities/api-helpers'
 import Heading from './Heading'
 import PokemonCard from './PokemonCard'
 import Spinner from './Spinner'
 
+const Loading = (
+  <div className="grid h-screen w-screen place-content-center">
+    <Spinner />
+  </div>
+)
+
 const Home = () => {
-  const dispatch = useAppDispatch()
-  const { pokemonListState } = useAppSelector((state) => state.pokemonReducer)
+  const { data, isPending } = useSuspenseQuery({
+    queryKey: ['getPokemonList'],
+    queryFn: getPokemonList,
+  })
+
   const [searchKeyword, setSearchKeyword] = useState('')
 
-  useEffect(() => {
-    dispatch(fetchPokemonList(LIST_LIMIT))
-  }, [dispatch])
-
-  if (pokemonListState.loading && !pokemonListState.loaded) {
-    return (
-      <div className="grid h-screen w-screen place-content-center">
-        <Spinner />
-      </div>
-    )
-  }
-
-  const showNoData = !pokemonListState.data?.results?.some((pokemon) =>
+  const showNoData = data?.results?.some((pokemon) =>
     pokemon.name.includes(searchKeyword)
   )
 
+  if (isPending) return Loading
+
   return (
-    <div className="">
+    <div>
       <Heading text="Pokemon List" />
       <div className="flex w-full flex-wrap gap-4 p-5 md:items-center md:justify-center">
         <strong className="">Filter Pokemon :</strong>
@@ -42,7 +41,7 @@ const Home = () => {
         />
       </div>
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-5 p-5 md:grid-cols-2 lg:grid-cols-3">
-        {pokemonListState.data?.results?.map((pokemon) => (
+        {data?.otherCardInfo.map((pokemon) => (
           <Suspense key={pokemon.name} fallback={<Spinner />}>
             <PokemonCard searchKeyword={searchKeyword} pokemon={pokemon} />
           </Suspense>

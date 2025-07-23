@@ -1,10 +1,10 @@
 import { NavLink } from 'react-router'
+import type { PokemonOtherCardInfoData } from '../../server/types'
 import { getDetailsPageRoute } from '../Routes/routes'
-import { PokemonListResponseItem } from '../utilities/models'
 import RenderOtherCardInfo from './RenderOtherCardInfo'
 
 interface PokemonCard {
-  pokemon: PokemonListResponseItem
+  pokemon: PokemonOtherCardInfoData
   searchKeyword: string
   handleOnClick?: () => void
 }
