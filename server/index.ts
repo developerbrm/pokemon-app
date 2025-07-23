@@ -24,6 +24,7 @@ export const fetchPokemonDetails = async (id: string) =>
     .get<PokemonData>(GET_SINGLE_POKEMON(id))
     .then((res) => res.data)
     .catch((err) => {
+      // console.log(err)
       throw new Error(err)
     })
 
@@ -36,6 +37,28 @@ Bun.serve({
         try {
           const limit = new URL(req.url).searchParams.get('limit') || LIST_LIMIT
           const pokemonList = await fetchPokemonList(Number(limit))
+
+          if (!pokemonList) {
+            return new Response(null, {
+              status: 404,
+              statusText: 'Not Found',
+            })
+          }
+
+          const allPokemonDetails = await Promise.all(
+            pokemonList.results.map((pokemon) =>
+              fetchPokemonDetails(pokemon.name)
+            )
+          )
+
+          pokemonList.otherCardInfo = allPokemonDetails.map((pokemon) => ({
+            height: pokemon.height,
+            name: pokemon.name,
+            weight: pokemon.weight,
+            sprites: pokemon.sprites,
+            species: pokemon.species,
+          }))
+
           return Response.json(pokemonList)
         } catch (err) {
           console.error(err)
