@@ -1,19 +1,22 @@
 import axios from 'axios'
-import type { PokemonData, PokemonListResponse } from './types'
-import type { BunRequest, BunResponse } from 'bun'
+import type { BunRequest } from 'bun'
 import { GETResponseOptions, getServerPort } from './helpers'
+import type { PokemonData, PokemonListResponse } from './types'
 
 const port = getServerPort()
 export const LIST_LIMIT = 50
 
 export const GET_SINGLE_POKEMON = (id: string) =>
   `https://pokeapi.co/api/v2/pokemon/${id}`
-export const GET_POKEMON_LIST = (limit = LIST_LIMIT) =>
-  `https://pokeapi.co/api/v2/pokemon?limit=${limit}`
+export const GET_POKEMON_LIST = (limit = LIST_LIMIT, offset = 0) =>
+  `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`
 
-export const fetchPokemonList = async (limit?: number) =>
+export const fetchPokemonList = async (
+  limit?: number | string,
+  offset?: number | string
+) =>
   axios
-    .get<PokemonListResponse>(GET_POKEMON_LIST(limit))
+    .get<PokemonListResponse>(GET_POKEMON_LIST(Number(limit), Number(offset)))
     .then((res) => res.data)
     .catch((err) => {
       throw new Error(err)
@@ -36,7 +39,8 @@ Bun.serve({
       GET: async (req: BunRequest) => {
         try {
           const limit = new URL(req.url).searchParams.get('limit') || LIST_LIMIT
-          const pokemonList = await fetchPokemonList(Number(limit))
+          const offset = new URL(req.url).searchParams.get('offset') || 0
+          const pokemonList = await fetchPokemonList(limit, offset)
 
           if (!pokemonList) {
             return new Response(null, {
