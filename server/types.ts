@@ -8,6 +8,7 @@ export interface PokemonListResponse {
   next: string | null
   previous: string | null
   results: PokemonListResponseItem[]
+  otherCardInfo: PokemonOtherCardInfoData[]
 }
 
 interface Ability {
@@ -153,3 +154,8 @@ export interface PokemonData {
   types: Type[]
   weight: number
 }
+
+type PokemonOtherCardInfoData = Pick<
+  PokemonData,
+  'height' | 'name' | 'weight' | 'sprites' | 'species'
+>
