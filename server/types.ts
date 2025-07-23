@@ -155,7 +155,12 @@ export interface PokemonData {
   weight: number
 }
 
-type PokemonOtherCardInfoData = Pick<
+export type PokemonOtherCardInfoData = Pick<
   PokemonData,
   'height' | 'name' | 'weight' | 'sprites' | 'species'
 >
+
+export type GetPokemonListParams = {
+  limit: number | string
+  offset: number | string
+}

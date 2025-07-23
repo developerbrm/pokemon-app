@@ -1,6 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
-import { PokemonData, PokemonListResponse } from './models'
+import { appendSlash, removeStartSlash } from '.'
+import { getServerPort } from '../../server/helpers'
+import type { PokemonListResponse } from '../../server/types'
+import { PokemonData } from './models'
 
 export const LIST_LIMIT = 150
 
@@ -27,3 +30,30 @@ export const fetchPokemonDetails = async (id: string) =>
     .catch((err) => {
       throw new Error(err)
     })
+
+const port = getServerPort()
+
+export const BASE_SERVER_URL =
+  import.meta.env.VITE_BASE_SERVER_URL ?? `http://localhost:${port}`
+
+export const constructApiUrl = (route: string) => {
+  const formattedBaseUrl = appendSlash(BASE_SERVER_URL)
+  const formattedRoute = removeStartSlash(route)
+
+  const finalUrl = `${formattedBaseUrl}${formattedRoute}`
+  return finalUrl
+}
+
+export const getPokemonList = async () => {
+  try {
+    const url = constructApiUrl('/get_pokemon_list')
+    const res = await fetch(url)
+    const data: PokemonListResponse = await res.json()
+
+    return data
+  } catch (error) {
+    console.log(error)
+
+    return null
+  }
+}
