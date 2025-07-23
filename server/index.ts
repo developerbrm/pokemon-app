@@ -1,22 +1,26 @@
 import axios from 'axios'
 import type { BunRequest } from 'bun'
 import { GETResponseOptions, getServerPort } from './helpers'
-import type { PokemonData, PokemonListResponse } from './types'
+import type {
+  GetPokemonListParams,
+  PokemonData,
+  PokemonListResponse,
+} from './types'
 
 const port = getServerPort()
 export const LIST_LIMIT = 50
 
 export const GET_SINGLE_POKEMON = (id: string) =>
   `https://pokeapi.co/api/v2/pokemon/${id}`
-export const GET_POKEMON_LIST = (limit = LIST_LIMIT, offset = 0) =>
+export const GET_POKEMON_LIST = ({
+  limit = LIST_LIMIT,
+  offset = 0,
+}: GetPokemonListParams) =>
   `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`
 
-export const fetchPokemonList = async (
-  limit?: number | string,
-  offset?: number | string
-) =>
+export const fetchPokemonList = async (params: GetPokemonListParams) =>
   axios
-    .get<PokemonListResponse>(GET_POKEMON_LIST(Number(limit), Number(offset)))
+    .get<PokemonListResponse>(GET_POKEMON_LIST(params))
     .then((res) => res.data)
     .catch((err) => {
       throw new Error(err)
@@ -40,10 +44,11 @@ Bun.serve({
         try {
           const limit = new URL(req.url).searchParams.get('limit') || LIST_LIMIT
           const offset = new URL(req.url).searchParams.get('offset') || 0
-          const pokemonList = await fetchPokemonList(limit, offset)
+          const pokemonList = await fetchPokemonList({ limit, offset })
 
           if (!pokemonList) {
             return new Response(null, {
+              ...GETResponseOptions,
               status: 404,
               statusText: 'Not Found',
             })
@@ -63,10 +68,11 @@ Bun.serve({
             species: pokemon.species,
           }))
 
-          return Response.json(pokemonList)
+          return Response.json(pokemonList, GETResponseOptions)
         } catch (err) {
           console.error(err)
           return new Response(null, {
+            ...GETResponseOptions,
             status: 500,
             statusText: 'Internal Server Error',
           })
