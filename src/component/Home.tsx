@@ -3,15 +3,9 @@ import { useState } from 'react'
 import { ScrollRestoration } from 'react-router'
 import { LIST_LIMIT } from '../../server/server-helpers'
 import { getPokemonList } from '../utilities/app-helpers'
+import CommonLoader from './CommonLoader'
 import Heading from './Heading'
 import PokemonCard from './PokemonCard'
-import Spinner from './Spinner'
-
-const Loading = (
-  <div className="grid h-screen w-screen place-content-center">
-    <Spinner />
-  </div>
-)
 
 const Home = () => {
   const { data, isPending } = useQuery({
@@ -21,7 +15,7 @@ const Home = () => {
 
   const [searchKeyword, setSearchKeyword] = useState('')
 
-  if (isPending) return Loading
+  if (isPending) return <CommonLoader />
 
   return (
     <div>

@@ -21,6 +21,13 @@ export const constructApiUrl = (route: string) => {
   return finalUrl
 }
 
+export const constructPubicMediaUrl = (imageUrl: string) => {
+  const baseUrl = appendSlash(window.location.href)
+  const endPoint = removeStartSlash(imageUrl)
+
+  return `${baseUrl}${endPoint}`
+}
+
 export const getPokemonList = async (params?: GetPokemonListParams) => {
   try {
     const url = constructApiUrl(API_ROUTES.GET_POKEMON_LIST)

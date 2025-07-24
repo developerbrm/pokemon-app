@@ -3,14 +3,8 @@ import { useRef } from 'react'
 import { NavLink, ScrollRestoration, useParams } from 'react-router'
 import { ROUTES } from '../Routes/routes'
 import { getPokemonDetails } from '../utilities/app-helpers'
+import CommonLoader from './CommonLoader'
 import Heading from './Heading'
-import Spinner from './Spinner'
-
-const Loading = (
-  <div className="grid h-screen w-screen place-content-center">
-    <Spinner />
-  </div>
-)
 
 const Details = () => {
   const params = useParams<{ name: string }>()
@@ -42,7 +36,7 @@ const Details = () => {
   //       .filter((pokemon) => pokemon.name !== name)
   //   : []
 
-  if (isPending) return Loading
+  if (isPending) return <CommonLoader />
 
   return (
     <section ref={containerRef} className="mx-auto max-w-7xl p-5">
