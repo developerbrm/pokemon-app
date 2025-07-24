@@ -1,63 +1,48 @@
-import { useCallback, useEffect, useRef } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { useRef } from 'react'
 import { NavLink, ScrollRestoration, useParams } from 'react-router'
-import useFetchPokemonDetails from '../hooks/useFetchPokemonDetails'
-import { useAppDispatch, useAppSelector } from '../redux/store'
 import { ROUTES } from '../Routes/routes'
-import { fetchPokemonList, LIST_LIMIT } from '../utilities/api-helpers'
+import { getPokemonDetails } from '../utilities/app-helpers'
 import Heading from './Heading'
-import PokemonCard from './PokemonCard'
 import Spinner from './Spinner'
+
+const Loading = (
+  <div className="grid h-screen w-screen place-content-center">
+    <Spinner />
+  </div>
+)
 
 const Details = () => {
   const params = useParams<{ name: string }>()
   const name = params.name as string
-  const { pokemonListState } = useAppSelector((state) => state.pokemonReducer)
-  const dispatch = useAppDispatch()
+
   const containerRef = useRef<HTMLDivElement>(null)
+  // const scrollToTop = useCallback(() => {
+  //   // if (containerRef.current) {
+  //   //   containerRef.current.scrollTo({
+  //   //     top: 0,
+  //   //     behavior: 'smooth',
+  //   //   })
+  //   // }
+  // }, [containerRef])
 
-  const scrollToTop = useCallback(() => {
-    // if (containerRef.current) {
-    //   containerRef.current.scrollTo({
-    //     top: 0,
-    //     behavior: 'smooth',
-    //   })
-    // }
-  }, [containerRef])
+  const { data: pokemon, isPending } = useQuery({
+    queryKey: [name],
+    queryFn: () => getPokemonDetails({ name }),
+  })
 
-  const pokemon = useAppSelector(
-    (state) => state.pokemonReducer.pokemonDetailsState?.[name]
-  )
+  // const nextPokemonIndex =
+  //   pokemonListState.data?.results?.findIndex(
+  //     (pokemon) => pokemon.name === name
+  //   ) + 1
 
-  const pokemonDetailsState = useFetchPokemonDetails(name)
+  // const featuredPokemonArr = nextPokemonIndex
+  //   ? pokemonListState.data?.results
+  //       ?.slice(nextPokemonIndex, nextPokemonIndex + 3)
+  //       .filter((pokemon) => pokemon.name !== name)
+  //   : []
 
-  useEffect(() => {
-    if (pokemonDetailsState.loaded) return
-
-    dispatch(fetchPokemonList(LIST_LIMIT))
-  }, [dispatch, pokemonDetailsState.loaded])
-
-  useEffect(() => {
-    scrollToTop()
-  }, [scrollToTop])
-
-  if (pokemonDetailsState.loading && !pokemonDetailsState.loaded) {
-    return (
-      <div className="grid h-screen w-screen place-content-center">
-        <Spinner />
-      </div>
-    )
-  }
-
-  const nextPokemonIndex =
-    pokemonListState.data?.results?.findIndex(
-      (pokemon) => pokemon.name === name
-    ) + 1
-
-  const featuredPokemonArr = nextPokemonIndex
-    ? pokemonListState.data?.results
-        ?.slice(nextPokemonIndex, nextPokemonIndex + 3)
-        .filter((pokemon) => pokemon.name !== name)
-    : []
+  if (isPending) return Loading
 
   return (
     <section ref={containerRef} className="mx-auto max-w-7xl p-5">
@@ -72,21 +57,17 @@ const Details = () => {
             alt={pokemon?.name}
           />
         </div>
-
         <div className="grid items-start gap-2 text-slate-600 lg:order-1">
           <div className="flex flex-wrap items-center gap-2 gap-x-6">
             <div>
               <strong>Height:</strong> {pokemon?.height}
             </div>
-
             <div>
               <strong>Species:</strong> {pokemon?.species.name}
             </div>
-
             <div>
               <strong>Weight:</strong> {pokemon?.weight} kg
             </div>
-
             {pokemon?.stats.map((stat) => (
               <div key={stat.stat.name} className="flex gap-2">
                 <strong>
@@ -98,7 +79,6 @@ const Details = () => {
               </div>
             ))}
           </div>
-
           <div className="mt-5 flex flex-wrap items-center gap-2 text-nowrap">
             <strong>Abilities:</strong>
             <div className="flex gap-2">
@@ -112,7 +92,6 @@ const Details = () => {
               ))}
             </div>
           </div>
-
           <div className="flex flex-wrap items-center gap-2 text-nowrap">
             <strong>Moves:</strong>
             {pokemon?.moves.map((move) => (
@@ -126,14 +105,12 @@ const Details = () => {
           </div>
         </div>
       </div>
-
       <div className={`mt-10 md:mt-18`}>
-        <div
+        {/* <div
           className={`${!featuredPokemonArr?.length && 'hidden'} mr-auto w-fit text-start`}
         >
           <Heading text="Similar Pokemons" />
         </div>
-
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
           {featuredPokemonArr?.map((pokemon) => (
             <PokemonCard
@@ -143,7 +120,7 @@ const Details = () => {
               handleOnClick={scrollToTop}
             />
           ))}
-        </div>
+        </div> */}
         <div className="mx-auto mt-10 flex justify-center md:mt-18">
           <NavLink
             className="mx-auto w-fit rounded-md bg-blue-50 p-4 py-2 font-medium text-blue-500 transition hover:bg-blue-500 hover:text-white"
@@ -153,7 +130,6 @@ const Details = () => {
           </NavLink>
         </div>
       </div>
-
       <ScrollRestoration />
     </section>
   )

@@ -5,6 +5,11 @@ import type {
   PokemonListResponse,
 } from './types'
 
+export const API_ROUTES = {
+  GET_POKEMON_LIST: `/get_pokemon_list`,
+  GET_POKEMON_DETAILS: `/get_pokemon_details`,
+}
+
 export const getServerPort = () => {
   let port
 
@@ -54,6 +59,6 @@ export const fetchPokemonDetails = async (id: string) =>
     .get<PokemonData>(GET_SINGLE_POKEMON(id))
     .then((res) => res.data)
     .catch((err) => {
-      // console.log(err)
+      console.log(err)
       throw new Error(err)
     })

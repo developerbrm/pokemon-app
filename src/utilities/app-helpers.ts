@@ -1,8 +1,10 @@
 import axios from 'axios'
 import { appendSlash, removeStartSlash } from '.'
-import { getServerPort } from '../../server/server-helpers'
+import { API_ROUTES, getServerPort } from '../../server/server-helpers'
 import type {
+  GetPokemonDetailsParams,
   GetPokemonListParams,
+  PokemonData,
   PokemonListResponse,
 } from '../../server/types'
 
@@ -21,9 +23,21 @@ export const constructApiUrl = (route: string) => {
 
 export const getPokemonList = async (params?: GetPokemonListParams) => {
   try {
-    const url = constructApiUrl('/get_pokemon_list')
-
+    const url = constructApiUrl(API_ROUTES.GET_POKEMON_LIST)
     const res = await axios.get<PokemonListResponse>(url, { params })
+
+    return res.data
+  } catch (error) {
+    console.log(error)
+
+    return null
+  }
+}
+
+export const getPokemonDetails = async (params?: GetPokemonDetailsParams) => {
+  try {
+    const url = constructApiUrl(API_ROUTES.GET_POKEMON_DETAILS)
+    const res = await axios.get<PokemonData>(url, { params })
 
     return res.data
   } catch (error) {

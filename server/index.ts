@@ -1,5 +1,6 @@
 import type { BunRequest } from 'bun'
 import {
+  API_ROUTES,
   fetchPokemonDetails,
   fetchPokemonList,
   GETResponseOptions,
@@ -12,7 +13,7 @@ const port = getServerPort()
 Bun.serve({
   port,
   routes: {
-    '/get_pokemon_list': {
+    [API_ROUTES['GET_POKEMON_LIST']]: {
       OPTIONS: () => new Response(null, GETResponseOptions),
       GET: async (req: BunRequest) => {
         try {
@@ -43,6 +44,32 @@ Bun.serve({
           }))
 
           return Response.json(pokemonList, GETResponseOptions)
+        } catch (err) {
+          console.error(err)
+          return new Response(null, {
+            ...GETResponseOptions,
+            status: 500,
+            statusText: 'Internal Server Error',
+          })
+        }
+      },
+    },
+    [API_ROUTES['GET_POKEMON_DETAILS']]: {
+      OPTIONS: () => new Response(null, GETResponseOptions),
+      GET: async (req: BunRequest) => {
+        try {
+          const name = new URL(req.url).searchParams.get('name') as string
+          const details = await fetchPokemonDetails(name)
+
+          if (!details) {
+            return new Response(null, {
+              ...GETResponseOptions,
+              status: 404,
+              statusText: 'Not Found',
+            })
+          }
+
+          return Response.json(details, GETResponseOptions)
         } catch (err) {
           console.error(err)
           return new Response(null, {

@@ -164,3 +164,7 @@ export type GetPokemonListParams = {
   limit: number | string
   offset: number | string
 }
+
+export type GetPokemonDetailsParams = {
+  name: string
+}
