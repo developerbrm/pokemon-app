@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { appendSlash, removeStartSlash } from '.'
-import { getServerPort } from '../../server/helpers'
+import { getServerPort } from '../../server/server-helpers'
 import type {
   GetPokemonListParams,
   PokemonListResponse,
