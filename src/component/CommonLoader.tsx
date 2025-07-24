@@ -4,8 +4,6 @@ const imageSrc = constructPubicMediaUrl('/pikachu.png')
 
 const CommonLoader = () => (
   <div className="grid h-screen w-screen place-content-center">
-    {/* <Spinner /> */}
-
     <div className="">
       <img
         src={imageSrc}
