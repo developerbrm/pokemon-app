@@ -1,6 +1,7 @@
-import { useSuspenseQuery } from '@tanstack/react-query'
-import { Suspense, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { useState } from 'react'
 import { ScrollRestoration } from 'react-router'
+import { LIST_LIMIT } from '../../server/helpers'
 import { getPokemonList } from '../utilities/api-helpers'
 import Heading from './Heading'
 import PokemonCard from './PokemonCard'
@@ -13,16 +14,12 @@ const Loading = (
 )
 
 const Home = () => {
-  const { data, isPending } = useSuspenseQuery({
+  const { data, isPending } = useQuery({
     queryKey: ['getPokemonList'],
-    queryFn: getPokemonList,
+    queryFn: () => getPokemonList({ limit: LIST_LIMIT, offset: 0 }),
   })
 
   const [searchKeyword, setSearchKeyword] = useState('')
-
-  const showNoData = data?.results?.some((pokemon) =>
-    pokemon.name.includes(searchKeyword)
-  )
 
   if (isPending) return Loading
 
@@ -50,7 +47,7 @@ const Home = () => {
         ))}
       </div>
       <div
-        className={`grid hidden text-center text-2xl font-bold text-slate-800 peer-empty:block`}
+        className={`hidden text-center text-2xl font-bold text-slate-800 peer-empty:grid`}
       >
         No Results To Show
       </div>
