@@ -24,7 +24,7 @@ export const getServerPort = () => {
 
 export const commonResponseOptions = {
   headers: {
-    'Content-Type': 'text/plain',
+    'Content-Type': 'text/json',
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
   },

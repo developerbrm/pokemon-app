@@ -5,10 +5,11 @@ import { ROUTES } from '../Routes/routes'
 import { getPokemonDetails } from '../utilities/app-helpers'
 import Heading from './Heading'
 import WithLoader from './WithLoader'
+import { GetPokemonDetailsParams } from '../../server/types'
 
 const Details = () => {
-  const params = useParams<{ name: string }>()
-  const name = params.name as string
+  const params = useParams<GetPokemonDetailsParams>()
+  const { id = '0' } = params
 
   const containerRef = useRef<HTMLDivElement>(null)
   // const scrollToTop = useCallback(() => {
@@ -21,8 +22,8 @@ const Details = () => {
   // }, [containerRef])
 
   const { data: pokemon, isPending } = useQuery({
-    queryKey: [name],
-    queryFn: () => getPokemonDetails({ name }),
+    queryKey: [id],
+    queryFn: () => getPokemonDetails({ id }),
   })
 
   // const nextPokemonIndex =
@@ -40,7 +41,7 @@ const Details = () => {
     <WithLoader isLoading={isPending}>
       <section ref={containerRef} className="mx-auto max-w-7xl p-5">
         <div className="mr-auto w-fit text-start">
-          <Heading text={name} />
+          <Heading text={pokemon?.name ?? ''} />
         </div>
         <div className="grid gap-5 lg:grid-cols-[1fr_auto]">
           <div className="mx-auto aspect-square w-[300px] rounded-full bg-gradient-to-b from-lime-300 to-white to-[300px] md:w-[350px] lg:order-2 lg:w-[400px]">

@@ -17,7 +17,7 @@ const PokemonCard = (props: PokemonCard) => {
   return (
     <NavLink
       onClick={handleOnClick}
-      to={getDetailsPageRoute(otherCardInfo.name)}
+      to={getDetailsPageRoute({ id: otherCardInfo.id })}
     >
       <div className="grid h-[200px] grid-flow-col justify-between rounded-md bg-slate-200 p-5 shadow-sm">
         <h3 className="text-2xl font-bold text-slate-900 capitalize">

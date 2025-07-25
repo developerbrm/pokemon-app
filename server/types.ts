@@ -137,7 +137,7 @@ export interface PokemonData {
   game_indices: GameIndex[]
   height: number
   held_items: HeldItem[]
-  id: number
+  id: string
   is_default: boolean
   location_area_encounters: string
   moves: Move[]
@@ -157,7 +157,7 @@ export interface PokemonData {
 
 export type PokemonOtherCardInfoData = Pick<
   PokemonData,
-  'height' | 'name' | 'weight' | 'sprites' | 'species'
+  'height' | 'name' | 'weight' | 'sprites' | 'species' | 'id'
 >
 
 export type GetPokemonListParams = {
@@ -166,5 +166,5 @@ export type GetPokemonListParams = {
 }
 
 export type GetPokemonDetailsParams = {
-  name: string
+  id: string
 }

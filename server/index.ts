@@ -41,6 +41,7 @@ Bun.serve({
             weight: pokemon.weight,
             sprites: pokemon.sprites,
             species: pokemon.species,
+            id: pokemon.id,
           }))
 
           return Response.json(pokemonList, GETResponseOptions)
@@ -58,8 +59,8 @@ Bun.serve({
       OPTIONS: () => new Response(null, GETResponseOptions),
       GET: async (req: BunRequest) => {
         try {
-          const name = new URL(req.url).searchParams.get('name') as string
-          const details = await fetchPokemonDetails(name)
+          const id = new URL(req.url).searchParams.get('id') as string
+          const details = await fetchPokemonDetails(id)
 
           if (!details) {
             return new Response(null, {
