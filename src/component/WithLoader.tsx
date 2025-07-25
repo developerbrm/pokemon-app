@@ -27,7 +27,7 @@ const WithLoader = (props: Props) => {
     <>
       {removeLoader ? null : (
         <div
-          className={`fixed inset-0 bg-white transition-all ${hideLoader ? 'scale-50 opacity-0' : ''}`}
+          className={`fixed inset-0 transition-all ${hideLoader ? 'scale-50 opacity-0' : ''}`}
         >
           <CommonLoader />
         </div>
