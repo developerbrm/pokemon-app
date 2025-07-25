@@ -7,6 +7,7 @@ import {
   getServerPort,
   LIST_LIMIT,
 } from './server-helpers'
+import type { PokemonData } from './types'
 
 const port = getServerPort()
 
@@ -29,11 +30,15 @@ Bun.serve({
             })
           }
 
-          const allPokemonDetails = await Promise.all(
-            pokemonList.results.map((pokemon) =>
-              fetchPokemonDetails(pokemon.name)
+          const allPokemonDetails =
+            (await Promise.allSettled(
+              pokemonList.results.map((pokemon) =>
+                fetchPokemonDetails(pokemon.name)
+              )
             )
-          )
+              .then((res) => res.filter((r) => r.status === 'fulfilled'))
+              .then((res) => res.map((r) => r.value))
+              .catch(console.log)) ?? ([] as PokemonData[])
 
           pokemonList.otherCardInfo = allPokemonDetails.map((pokemon) => ({
             height: pokemon.height,
