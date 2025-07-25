@@ -2,6 +2,7 @@ import axios from 'axios'
 import { appendSlash, removeStartSlash } from '.'
 import { API_ROUTES, getServerPort } from '../../server/server-helpers'
 import type {
+  GetFeaturedPokemons,
   GetPokemonDetailsParams,
   GetPokemonListParams,
   PokemonData,
@@ -44,6 +45,19 @@ export const getPokemonList = async (params?: GetPokemonListParams) => {
 export const getPokemonDetails = async (params?: GetPokemonDetailsParams) => {
   try {
     const url = constructApiUrl(API_ROUTES.GET_POKEMON_DETAILS)
+    const res = await axios.get<PokemonData>(url, { params })
+
+    return res.data
+  } catch (error) {
+    console.log(error)
+
+    return null
+  }
+}
+
+export const getFeaturedPokemons = async (params?: GetFeaturedPokemons) => {
+  try {
+    const url = constructApiUrl(API_ROUTES.GET_FEATURED_POKEMONS)
     const res = await axios.get<PokemonData>(url, { params })
 
     return res.data

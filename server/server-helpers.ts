@@ -8,6 +8,7 @@ import type {
 export const API_ROUTES = {
   GET_POKEMON_LIST: `/get_pokemon_list`,
   GET_POKEMON_DETAILS: `/get_pokemon_details`,
+  GET_FEATURED_POKEMONS: `/get_featured_pokemons`,
 }
 
 export const getServerPort = () => {

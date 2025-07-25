@@ -21,7 +21,7 @@ Bun.serve({
           const offset = new URL(req.url).searchParams.get('offset') || 0
           const pokemonList = await fetchPokemonList({ limit, offset })
 
-          if (!pokemonList) {
+          if (!pokemonList.count) {
             return new Response(null, {
               ...GETResponseOptions,
               status: 404,
@@ -71,6 +71,41 @@ Bun.serve({
           }
 
           return Response.json(details, GETResponseOptions)
+        } catch (err) {
+          console.error(err)
+          return new Response(null, {
+            ...GETResponseOptions,
+            status: 500,
+            statusText: 'Internal Server Error',
+          })
+        }
+      },
+    },
+    [API_ROUTES['GET_FEATURED_POKEMONS']]: {
+      OPTIONS: () => new Response(null, GETResponseOptions),
+      GET: async (req: BunRequest) => {
+        try {
+          const id = Number(new URL(req.url).searchParams.get('id'))
+          const nextIds = [id + 1, id + 2, id + 3].map((id) => id.toString())
+
+          const otherPokemonDetailsArr = await Promise.allSettled(
+            nextIds.map((id) => fetchPokemonDetails(id))
+          )
+            .then((res) => res.filter((r) => r.status === 'fulfilled'))
+            .then((res) => res.map((r) => r.value))
+            .catch(console.log)
+
+          if (!otherPokemonDetailsArr?.length) {
+            return new Response(null, {
+              ...GETResponseOptions,
+              status: 404,
+              statusText: 'Not Found',
+            })
+          }
+
+          const data = otherPokemonDetailsArr
+
+          return Response.json(data, GETResponseOptions)
         } catch (err) {
           console.error(err)
           return new Response(null, {

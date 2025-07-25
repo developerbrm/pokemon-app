@@ -168,3 +168,5 @@ export type GetPokemonListParams = {
 export type GetPokemonDetailsParams = {
   id: string
 }
+
+export type GetFeaturedPokemons = Pick<GetPokemonDetailsParams, 'id'>
