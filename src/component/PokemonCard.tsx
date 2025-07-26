@@ -16,6 +16,7 @@ const PokemonCard = (props: PokemonCard) => {
 
   return (
     <NavLink
+      title={`click to see ${otherCardInfo.name} details`}
       onClick={handleOnClick}
       to={getDetailsPageRoute({ id: otherCardInfo.id })}
     >
