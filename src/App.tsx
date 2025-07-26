@@ -1,13 +1,14 @@
-import { Provider } from 'react-redux'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import './css/index.css'
 import RoutesProvider from './Routes/RoutesProvider'
-import { store } from './redux/store'
+
+const queryClient = new QueryClient()
 
 function App() {
   return (
-    <Provider store={store}>
+    <QueryClientProvider client={queryClient}>
       <RoutesProvider />
-    </Provider>
+    </QueryClientProvider>
   )
 }
 

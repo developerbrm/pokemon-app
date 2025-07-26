@@ -1,61 +1,53 @@
-import { Suspense, useEffect, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { useState } from 'react'
 import { ScrollRestoration } from 'react-router'
-import { useAppDispatch, useAppSelector } from '../redux/store'
-import { fetchPokemonList, LIST_LIMIT } from '../utilities/api-helpers'
+import { LIST_LIMIT } from '../../server/server-helpers'
+import { getPokemonList } from '../utilities/app-helpers'
 import Heading from './Heading'
 import PokemonCard from './PokemonCard'
-import Spinner from './Spinner'
+import WithLoader from './WithLoader'
 
 const Home = () => {
-  const dispatch = useAppDispatch()
-  const { pokemonListState } = useAppSelector((state) => state.pokemonReducer)
+  const { data, isPending } = useQuery({
+    queryKey: ['getPokemonList'],
+    queryFn: () => getPokemonList({ limit: LIST_LIMIT, offset: 0 }),
+  })
+
   const [searchKeyword, setSearchKeyword] = useState('')
 
-  useEffect(() => {
-    dispatch(fetchPokemonList(LIST_LIMIT))
-  }, [dispatch])
-
-  if (pokemonListState.loading && !pokemonListState.loaded) {
-    return (
-      <div className="grid h-screen w-screen place-content-center">
-        <Spinner />
-      </div>
-    )
-  }
-
-  const showNoData = !pokemonListState.data?.results?.some((pokemon) =>
-    pokemon.name.includes(searchKeyword)
-  )
-
   return (
-    <div className="">
-      <Heading text="Pokemon List" />
-      <div className="flex w-full flex-wrap gap-4 p-5 md:items-center md:justify-center">
-        <strong className="">Filter Pokemon :</strong>
+    <WithLoader isLoading={isPending}>
+      <div>
+        <Heading text="Pokemon List" />
+        <div className="flex w-full flex-wrap gap-4 p-5 md:items-center md:justify-center">
+          <strong className="">Filter Pokemon :</strong>
 
-        <input
-          value={searchKeyword}
-          onChange={(e) => setSearchKeyword(e.target.value.trim())}
-          type="text"
-          placeholder="type to search"
-          className="block w-full rounded-md border-2 border-slate-600 p-4 py-2 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out outline-none focus:border-sky-500 md:max-w-xs"
-        />
-      </div>
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-5 p-5 md:grid-cols-2 lg:grid-cols-3">
-        {pokemonListState.data?.results?.map((pokemon) => (
-          <Suspense key={pokemon.name} fallback={<Spinner />}>
-            <PokemonCard searchKeyword={searchKeyword} pokemon={pokemon} />
-          </Suspense>
-        ))}
-      </div>
-      <div
-        className={`grid text-center text-2xl font-bold text-slate-800 ${showNoData ? '' : 'hidden'}`}
-      >
-        No Results To Show
-      </div>
+          <input
+            value={searchKeyword}
+            onChange={(e) => setSearchKeyword(e.target.value.trim())}
+            type="text"
+            placeholder="type to search"
+            className="block w-full rounded-md border-2 border-slate-600 p-4 py-2 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out outline-none focus:border-sky-500 md:max-w-xs"
+          />
+        </div>
+        <div className="peer mx-auto grid max-w-6xl grid-cols-1 gap-5 p-5 md:grid-cols-2 lg:grid-cols-3">
+          {data?.otherCardInfo.map((pokemon) => (
+            <PokemonCard
+              key={pokemon.name}
+              searchKeyword={searchKeyword}
+              otherCardInfo={pokemon}
+            />
+          ))}
+        </div>
+        <div
+          className={`hidden text-center text-2xl font-bold text-slate-800 peer-empty:grid`}
+        >
+          No Results To Show
+        </div>
 
-      <ScrollRestoration />
-    </div>
+        <ScrollRestoration />
+      </div>
+    </WithLoader>
   )
 }
 

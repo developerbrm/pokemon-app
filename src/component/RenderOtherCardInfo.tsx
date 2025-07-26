@@ -1,42 +1,26 @@
-import useFetchPokemonDetails from '../hooks/useFetchPokemonDetails'
-import { useAppSelector } from '../redux/store'
-import Spinner from './Spinner'
+import type { PokemonOtherCardInfoData } from '../../server/types'
 
-const RenderOtherCardInfo = ({ name }: { name: string }) => {
-  const pokemonDetailsState = useFetchPokemonDetails(name)
-
-  const pokemon = useAppSelector(
-    (state) => state.pokemonReducer.pokemonDetailsState?.[name]
-  )
-
-  if (pokemonDetailsState.loading && !pokemonDetailsState.loaded) {
-    return (
-      <div className="mr-5 grid place-content-center">
-        <Spinner svgStyles="!h-15 !w-15" />
-      </div>
-    )
-  }
-
+const RenderOtherCardInfo = (otherCardInfo: PokemonOtherCardInfoData) => {
   return (
     <div className="col-span-2 row-start-2 grid w-full grid-flow-col justify-between">
       <div className="gap-2 self-end text-slate-800">
         <div>
-          <strong>Height:</strong> {pokemon?.height}
+          <strong>Height:</strong> {otherCardInfo?.height}
         </div>
 
         <div>
-          <strong>Species:</strong> {pokemon?.species.name}
+          <strong>Species:</strong> {otherCardInfo?.species.name}
         </div>
 
         <div>
-          <strong>Weight:</strong> {pokemon?.weight} kg
+          <strong>Weight:</strong> {otherCardInfo?.weight} kg
         </div>
       </div>
       <div className="aspect-square w-[120px]">
         <img
           className="h-full w-full object-contain drop-shadow-md"
-          src={pokemon?.sprites.other['official-artwork'].front_default}
-          alt={pokemon?.name}
+          src={otherCardInfo?.sprites.other['official-artwork'].front_default}
+          alt={otherCardInfo?.name}
         />
       </div>
     </div>

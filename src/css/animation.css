@@ -1,0 +1,40 @@
+.spinner-animation {
+  animation:
+    glow 2.5s linear infinite,
+    rotate 2.5s ease infinite,
+    scale 2.5s ease infinite;
+}
+
+@keyframes rotate {
+  0% {
+    rotate: -2turn;
+  }
+}
+
+@keyframes scale {
+  0% {
+    scale: 1;
+  }
+
+  20% {
+    scale: 1.5;
+  }
+
+  100% {
+    scale: 1;
+  }
+}
+
+@keyframes glow {
+  0% {
+    filter: drop-shadow(0 0 2px oklch(90.5% 0.182 98.111));
+  }
+
+  50% {
+    filter: drop-shadow(0 0 10px oklch(75% 0.183 55.934));
+  }
+
+  100% {
+    filter: drop-shadow(0 0 2px oklch(90.5% 0.182 98.111));
+  }
+}

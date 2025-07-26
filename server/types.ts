@@ -1,10 +1,3 @@
-export interface InitialUIState {
-  data: unknown
-  loading: boolean
-  error: unknown
-  loaded: boolean
-}
-
 export interface PokemonListResponseItem {
   name: string
   url: string
@@ -15,6 +8,7 @@ export interface PokemonListResponse {
   next: string | null
   previous: string | null
   results: PokemonListResponseItem[]
+  otherCardInfo: PokemonOtherCardInfoData[]
 }
 
 interface Ability {
@@ -143,7 +137,7 @@ export interface PokemonData {
   game_indices: GameIndex[]
   height: number
   held_items: HeldItem[]
-  id: number
+  id: string
   is_default: boolean
   location_area_encounters: string
   moves: Move[]
@@ -160,3 +154,19 @@ export interface PokemonData {
   types: Type[]
   weight: number
 }
+
+export type PokemonOtherCardInfoData = Pick<
+  PokemonData,
+  'height' | 'name' | 'weight' | 'sprites' | 'species' | 'id'
+>
+
+export type GetPokemonListParams = {
+  limit: number | string
+  offset: number | string
+}
+
+export type GetPokemonDetailsParams = {
+  id: string
+}
+
+export type GetFeaturedPokemons = Pick<GetPokemonDetailsParams, 'id'>
