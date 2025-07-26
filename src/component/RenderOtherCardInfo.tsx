@@ -18,6 +18,7 @@ const RenderOtherCardInfo = (otherCardInfo: PokemonOtherCardInfoData) => {
       </div>
       <div className="aspect-square w-[120px]">
         <img
+          loading="lazy"
           className="h-full w-full object-contain drop-shadow-md"
           src={otherCardInfo?.sprites.other['official-artwork'].front_default}
           alt={otherCardInfo?.name}
