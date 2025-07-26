@@ -7,7 +7,7 @@ const CommonLoader = () => (
     <div className="">
       <img
         src={imageSrc}
-        alt="pikachuImage"
+        alt=""
         className="spinner-animation aspect-square w-[50px] object-contain object-center drop-shadow-sm"
       />
     </div>
