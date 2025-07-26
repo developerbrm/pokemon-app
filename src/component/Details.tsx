@@ -1,11 +1,12 @@
 import { useQuery } from '@tanstack/react-query'
 import { useRef } from 'react'
+import { IoIosArrowBack } from 'react-icons/io'
 import { NavLink, ScrollRestoration, useParams } from 'react-router'
+import { GetPokemonDetailsParams } from '../../server/types'
 import { ROUTES } from '../Routes/routes'
 import { getPokemonDetails } from '../utilities/app-helpers'
 import Heading from './Heading'
 import WithLoader from './WithLoader'
-import { GetPokemonDetailsParams } from '../../server/types'
 
 const Details = () => {
   const params = useParams<GetPokemonDetailsParams>()
@@ -39,9 +40,22 @@ const Details = () => {
 
   return (
     <WithLoader isLoading={isPending}>
-      <section ref={containerRef} className="mx-auto max-w-7xl p-5">
-        <div className="mr-auto w-fit text-start">
-          <Heading text={pokemon?.name ?? ''} />
+      <section ref={containerRef} className="mx-auto max-w-6xl p-5">
+        {/* <NavLink
+          className="mt-5 mb-3 inline-block w-fit rounded-full bg-blue-50 p-2 font-medium text-blue-500 transition hover:bg-blue-500 hover:text-white"
+          to={ROUTES.HOME}
+        >
+          <IoIosArrowBack />
+        </NavLink> */}
+        <div className="relative my-5 flex w-full items-center justify-start gap-2 text-start">
+          <NavLink
+            title="Go back"
+            className="inline-block rounded-md bg-blue-50 p-2 font-medium text-blue-500 transition hover:bg-blue-500 hover:text-white lg:absolute lg:top-1/2 lg:-left-12 lg:-translate-y-1/2"
+            to={ROUTES.HOME}
+          >
+            <IoIosArrowBack size={20} />
+          </NavLink>
+          <Heading className="!m-0" text={pokemon?.name ?? ''} />
         </div>
         <div className="grid gap-5 lg:grid-cols-[1fr_auto]">
           <div className="mx-auto aspect-square w-[300px] rounded-full bg-gradient-to-b from-lime-300 to-white to-[300px] md:w-[350px] lg:order-2 lg:w-[400px]">
@@ -117,10 +131,13 @@ const Details = () => {
         </div> */}
           <div className="mx-auto mt-10 flex justify-center md:mt-18">
             <NavLink
-              className="mx-auto w-fit rounded-md bg-blue-50 p-4 py-2 font-medium text-blue-500 transition hover:bg-blue-500 hover:text-white"
+              title="Go back"
+              className="mx-auto flex w-fit items-center justify-center gap-1 rounded-md bg-blue-50 p-4 py-2 font-medium text-blue-500 transition hover:bg-blue-500 hover:text-white"
               to={ROUTES.HOME}
             >
-              Back to home
+              <IoIosArrowBack />
+
+              <span>Back to home</span>
             </NavLink>
           </div>
         </div>
