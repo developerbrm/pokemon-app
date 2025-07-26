@@ -58,7 +58,7 @@ export const getPokemonDetails = async (params?: GetPokemonDetailsParams) => {
 export const getFeaturedPokemons = async (params?: GetFeaturedPokemons) => {
   try {
     const url = constructApiUrl(API_ROUTES.GET_FEATURED_POKEMONS)
-    const res = await axios.get<PokemonData>(url, { params })
+    const res = await axios.get<PokemonData[]>(url, { params })
 
     return res.data
   } catch (error) {

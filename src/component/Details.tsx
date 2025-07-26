@@ -5,6 +5,7 @@ import { NavLink, ScrollRestoration, useParams } from 'react-router'
 import { GetPokemonDetailsParams } from '../../server/types'
 import { ROUTES } from '../Routes/routes'
 import { getPokemonDetails } from '../utilities/app-helpers'
+import FeaturedPokemons from './FeaturedPokemons'
 import Heading from './Heading'
 import WithLoader from './WithLoader'
 
@@ -13,43 +14,18 @@ const Details = () => {
   const { id = '0' } = params
 
   const containerRef = useRef<HTMLDivElement>(null)
-  // const scrollToTop = useCallback(() => {
-  //   // if (containerRef.current) {
-  //   //   containerRef.current.scrollTo({
-  //   //     top: 0,
-  //   //     behavior: 'smooth',
-  //   //   })
-  //   // }
-  // }, [containerRef])
 
   const { data: pokemon, isPending } = useQuery({
     queryKey: [id],
     queryFn: () => getPokemonDetails({ id }),
   })
 
-  // const nextPokemonIndex =
-  //   pokemonListState.data?.results?.findIndex(
-  //     (pokemon) => pokemon.name === name
-  //   ) + 1
-
-  // const featuredPokemonArr = nextPokemonIndex
-  //   ? pokemonListState.data?.results
-  //       ?.slice(nextPokemonIndex, nextPokemonIndex + 3)
-  //       .filter((pokemon) => pokemon.name !== name)
-  //   : []
-
   return (
     <WithLoader isLoading={isPending}>
       <section ref={containerRef} className="mx-auto max-w-6xl p-5">
-        {/* <NavLink
-          className="mt-5 mb-3 inline-block w-fit rounded-full bg-blue-50 p-2 font-medium text-blue-500 transition hover:bg-blue-500 hover:text-white"
-          to={ROUTES.HOME}
-        >
-          <IoIosArrowBack />
-        </NavLink> */}
         <div className="relative my-5 flex w-full items-center justify-start gap-2 text-start">
           <NavLink
-            title="Go back"
+            title="Go back to home"
             className="inline-block rounded-md bg-blue-50 p-2 font-medium text-blue-500 transition hover:bg-blue-500 hover:text-white lg:absolute lg:top-1/2 lg:-left-12 lg:-translate-y-1/2"
             to={ROUTES.HOME}
           >
@@ -114,24 +90,11 @@ const Details = () => {
           </div>
         </div>
         <div className={`mt-10 md:mt-18`}>
-          {/* <div
-          className={`${!featuredPokemonArr?.length && 'hidden'} mr-auto w-fit text-start`}
-        >
-          <Heading text="Similar Pokemons" />
-        </div>
-        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {featuredPokemonArr?.map((pokemon) => (
-            <PokemonCard
-              key={pokemon.name}
-              searchKeyword={''}
-              otherCardInfo={pokemon}
-              handleOnClick={scrollToTop}
-            />
-          ))}
-        </div> */}
+          <FeaturedPokemons id={id} />
+
           <div className="mx-auto mt-10 flex justify-center md:mt-18">
             <NavLink
-              title="Go back"
+              title="Go back to home"
               className="mx-auto flex w-fit items-center justify-center gap-1 rounded-md bg-blue-50 p-4 py-2 font-medium text-blue-500 transition hover:bg-blue-500 hover:text-white"
               to={ROUTES.HOME}
             >
