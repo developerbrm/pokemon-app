@@ -1,4 +1,3 @@
-import type { BunRequest } from 'bun'
 import {
   API_ROUTES,
   fetchPokemonDetails,
@@ -13,14 +12,24 @@ const port = getServerPort()
 
 Bun.serve({
   port,
-  routes: {
-    [API_ROUTES['GET_POKEMON_LIST']]: {
-      OPTIONS: () => new Response(null, GETResponseOptions),
-      GET: async (req: BunRequest) => {
-        try {
-          const limit = new URL(req.url).searchParams.get('limit') || LIST_LIMIT
-          const offset = new URL(req.url).searchParams.get('offset') || 0
-          const pokemonList = await fetchPokemonList({ limit, offset })
+  async fetch(request: Request) {
+    const url = new URL(request.url)
+    const path = url.pathname
+    const method = request.method
+
+    try {
+      if (method === 'OPTIONS') {
+        return new Response(null, GETResponseOptions)
+      }
+
+      if (path === API_ROUTES['GET_POKEMON_LIST']) {
+        if (method === 'GET') {
+          const limit = url.searchParams.get('limit') || LIST_LIMIT
+          const offset = url.searchParams.get('offset') || 0
+          const pokemonList = await fetchPokemonList({
+            limit: Number(limit),
+            offset: Number(offset),
+          })
 
           if (!pokemonList.count) {
             return new Response(null, {
@@ -38,7 +47,7 @@ Bun.serve({
             )
               .then((res) => res.filter((r) => r.status === 'fulfilled'))
               .then((res) => res.map((r) => r.value))
-              .catch(console.log)) ?? ([] as PokemonData[])
+              .catch(console.error)) ?? ([] as PokemonData[])
 
           pokemonList.otherCardInfo = allPokemonDetails.map((pokemon) => ({
             height: pokemon.height,
@@ -50,21 +59,10 @@ Bun.serve({
           }))
 
           return Response.json(pokemonList, GETResponseOptions)
-        } catch (err) {
-          console.error(err)
-          return new Response(null, {
-            ...GETResponseOptions,
-            status: 500,
-            statusText: 'Internal Server Error',
-          })
         }
-      },
-    },
-    [API_ROUTES['GET_POKEMON_DETAILS']]: {
-      OPTIONS: () => new Response(null, GETResponseOptions),
-      GET: async (req: BunRequest) => {
-        try {
-          const id = new URL(req.url).searchParams.get('id') as string
+      } else if (path === API_ROUTES['GET_POKEMON_DETAILS']) {
+        if (method === 'GET') {
+          const id = url.searchParams.get('id') as string
           const details = await fetchPokemonDetails(id)
 
           if (!details) {
@@ -76,21 +74,10 @@ Bun.serve({
           }
 
           return Response.json(details, GETResponseOptions)
-        } catch (err) {
-          console.error(err)
-          return new Response(null, {
-            ...GETResponseOptions,
-            status: 500,
-            statusText: 'Internal Server Error',
-          })
         }
-      },
-    },
-    [API_ROUTES['GET_FEATURED_POKEMONS']]: {
-      OPTIONS: () => new Response(null, GETResponseOptions),
-      GET: async (req: BunRequest) => {
-        try {
-          const id = Number(new URL(req.url).searchParams.get('id'))
+      } else if (path === API_ROUTES['GET_FEATURED_POKEMONS']) {
+        if (method === 'GET') {
+          const id = Number(url.searchParams.get('id'))
           const nextIds = [id + 1, id + 2, id + 3].map((id) => id.toString())
 
           const otherPokemonDetailsArr = await Promise.allSettled(
@@ -98,7 +85,7 @@ Bun.serve({
           )
             .then((res) => res.filter((r) => r.status === 'fulfilled'))
             .then((res) => res.map((r) => r.value))
-            .catch(console.log)
+            .catch(console.error)
 
           if (!otherPokemonDetailsArr?.length) {
             return new Response(null, {
@@ -111,17 +98,26 @@ Bun.serve({
           const data = otherPokemonDetailsArr
 
           return Response.json(data, GETResponseOptions)
-        } catch (err) {
-          console.error(err)
-          return new Response(null, {
-            ...GETResponseOptions,
-            status: 500,
-            statusText: 'Internal Server Error',
-          })
         }
-      },
-    },
+      }
+
+      return new Response('Not Found', {
+        ...GETResponseOptions,
+        status: 404,
+      })
+    } catch (err) {
+      console.error(err)
+      return new Response('Internal Server Error', {
+        ...GETResponseOptions,
+        status: 500,
+        statusText: 'Internal Server Error',
+      })
+    }
+  },
+  error(error: Error) {
+    console.error('Bun server error:', error)
+    return new Response('Bun Server Error', { status: 500 })
   },
 })
 
-console.log(`Server running on ${port}`)
+console.log(`Server running on http://localhost:${port}`)

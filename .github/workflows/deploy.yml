@@ -36,6 +36,9 @@ jobs:
       - name: Install dependencies
         run: bun install
       - name: Build
+        env:
+          VITE_BASE_SERVER_URL: ${{ secrets.VITE_BASE_SERVER_URL }}
+          VITE_SERVER_PORT: ${{ secrets.VITE_SERVER_PORT }}
         run: bun run build
       - name: Setup Pages
         uses: actions/configure-pages@v4
