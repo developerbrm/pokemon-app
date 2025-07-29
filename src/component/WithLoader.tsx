@@ -41,7 +41,7 @@ const WithLoader = (props: Props) => {
 
           <div className="fixed inset-0 grid place-content-center">
             <p
-              className={`${showAdditionalInfo ? '' : 'opacity-0'} mt-[250px] px-10 text-center text-lg font-medium text-amber-400 transition-all lg:text-xl`}
+              className={`${showAdditionalInfo ? '' : 'opacity-0'} mt-[250px] px-10 text-center text-lg font-medium text-amber-400 transition-all duration-1000 lg:text-xl`}
             >
               Looks like the free server hosting is having a cold start !
             </p>
