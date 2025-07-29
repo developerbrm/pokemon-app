@@ -14,6 +14,8 @@ const port = getServerPort()
 export const BASE_SERVER_URL =
   import.meta.env.VITE_BASE_SERVER_URL ?? `http://localhost:${port}`
 
+export const BASE_APP_URL = import.meta.env.BASE_URL
+
 export const constructApiUrl = (route: string) => {
   const formattedBaseUrl = appendSlash(BASE_SERVER_URL)
   const formattedRoute = removeStartSlash(route)
@@ -23,7 +25,7 @@ export const constructApiUrl = (route: string) => {
 }
 
 export const constructPubicMediaUrl = (imageUrl: string) => {
-  const baseUrl = appendSlash(window.location.href)
+  const baseUrl = appendSlash(BASE_APP_URL)
   const endPoint = removeStartSlash(imageUrl)
 
   return `${baseUrl}${endPoint}`
