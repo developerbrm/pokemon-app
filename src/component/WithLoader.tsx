@@ -8,10 +8,16 @@ interface Props {
 
 const WithLoader = (props: Props) => {
   const { isLoading, children } = props
+
   const [hideLoader, setHideLoader] = useState(false)
   const [removeLoader, setRemoveLoader] = useState(false)
+  const [showAdditionalInfo, setShowAdditionalInfo] = useState(false)
 
   useEffect(() => {
+    setTimeout(() => {
+      setShowAdditionalInfo(true)
+    }, 8 * 1000)
+
     if (isLoading) return
 
     setTimeout(() => {
@@ -26,10 +32,20 @@ const WithLoader = (props: Props) => {
   return (
     <>
       {removeLoader ? null : (
-        <div
-          className={`fixed inset-0 transition-all ${hideLoader ? 'scale-50 opacity-0' : ''}`}
-        >
-          <CommonLoader />
+        <div>
+          <div
+            className={`fixed inset-0 transition-all ${hideLoader ? 'scale-50 opacity-0' : ''}`}
+          >
+            <CommonLoader />
+          </div>
+
+          <div className="fixed inset-0 grid place-content-center">
+            <p
+              className={`${showAdditionalInfo ? '' : 'opacity-0'} mt-[250px] px-10 text-center text-lg font-medium text-amber-400 transition-all lg:text-xl`}
+            >
+              Looks like the free server hosting is having a cold start !
+            </p>
+          </div>
         </div>
       )}
 
