@@ -118,6 +118,8 @@ Bun.serve({
     console.error('Bun server error:', error)
     return new Response('Bun Server Error', { status: 500 })
   },
+
+  idleTimeout: 30,
 })
 
 console.log(`Server running on http://localhost:${port}`)
