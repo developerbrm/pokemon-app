@@ -5,7 +5,7 @@ import { ScrollRestoration } from 'react-router'
 import { LIST_LIMIT } from '../../server/server-helpers'
 import { getPokemonList } from '../utilities/app-helpers'
 import Heading from './Heading'
-import PokemonCard from './PokemonCard'
+import PokemonCard, { LoadingPokemonCard } from './PokemonCard'
 import WithLoader from './WithLoader'
 
 const observerOptions = {
@@ -48,7 +48,7 @@ const Home = () => {
           />
         </div>
 
-        <div className="peer mx-auto grid max-w-6xl grid-cols-1 gap-5 p-5 md:grid-cols-2 lg:grid-cols-3">
+        <div className="peer mx-auto my-5 grid max-w-6xl grid-cols-1 gap-5 px-5 md:grid-cols-2 lg:grid-cols-3">
           {data?.pages?.map((data, i) => (
             <React.Fragment key={i}>
               {data?.otherCardInfo.map((pokemon) => (
@@ -60,13 +60,19 @@ const Home = () => {
               ))}
             </React.Fragment>
           ))}
-
-          {hasNextPage && (
-            <div ref={ref}>
-              {isFetchingNextPage ? 'Loading more...' : 'Load More'}
-            </div>
-          )}
         </div>
+
+        {hasNextPage && (
+          <div
+            className="mx-auto my-5 grid max-w-6xl grid-cols-1 gap-5 px-5 md:grid-cols-2 lg:grid-cols-3"
+            ref={ref}
+          >
+            {isFetchingNextPage &&
+              [...Array(window.innerWidth > 1024 ? 4 : 2)].map((_) => (
+                <LoadingPokemonCard key={_} />
+              ))}
+          </div>
+        )}
 
         <div
           className={`hidden text-center text-2xl font-bold text-slate-800 peer-empty:grid`}
