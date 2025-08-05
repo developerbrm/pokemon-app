@@ -37,7 +37,7 @@ export const GETResponseOptions = {
   'Content-Type': 'application/json',
 }
 
-export const LIST_LIMIT = 50
+export const LIST_LIMIT = 10
 
 export const GET_SINGLE_POKEMON = (id: string) =>
   `https://pokeapi.co/api/v2/pokemon/${id}`
