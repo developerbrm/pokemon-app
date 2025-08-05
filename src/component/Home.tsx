@@ -1,5 +1,6 @@
-import { useQuery } from '@tanstack/react-query'
-import { useState } from 'react'
+import { useInfiniteQuery } from '@tanstack/react-query'
+import React, { useEffect, useState } from 'react'
+import { useInView } from 'react-intersection-observer'
 import { ScrollRestoration } from 'react-router'
 import { LIST_LIMIT } from '../../server/server-helpers'
 import { getPokemonList } from '../utilities/app-helpers'
@@ -7,16 +8,32 @@ import Heading from './Heading'
 import PokemonCard from './PokemonCard'
 import WithLoader from './WithLoader'
 
-const Home = () => {
-  const { data, isPending } = useQuery({
-    queryKey: ['getPokemonList'],
-    queryFn: () => getPokemonList({ limit: LIST_LIMIT, offset: 0 }),
-  })
+const observerOptions = {
+  threshold: 0.5,
+}
 
+const Home = () => {
   const [searchKeyword, setSearchKeyword] = useState('')
+  const { ref, inView } = useInView(observerOptions)
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+    useInfiniteQuery({
+      queryKey: ['getPokemonList'],
+      initialPageParam: 0,
+      queryFn: ({ pageParam = 0 }) =>
+        getPokemonList({ limit: LIST_LIMIT, offset: pageParam }),
+      getNextPageParam: (lastPage, allPages, lastPageParam) => {
+        return lastPageParam + LIST_LIMIT
+      },
+    })
+
+  useEffect(() => {
+    if (inView && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage()
+    }
+  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage])
 
   return (
-    <WithLoader isLoading={isPending}>
+    <WithLoader isLoading={isLoading}>
       <div>
         <Heading text="Pokemon List" />
         <div className="flex w-full flex-wrap gap-4 p-5 md:items-center md:justify-center">
@@ -30,15 +47,27 @@ const Home = () => {
             className="block w-full rounded-md border-2 border-slate-600 p-4 py-2 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out outline-none focus:border-sky-500 md:max-w-xs"
           />
         </div>
+
         <div className="peer mx-auto grid max-w-6xl grid-cols-1 gap-5 p-5 md:grid-cols-2 lg:grid-cols-3">
-          {data?.otherCardInfo.map((pokemon) => (
-            <PokemonCard
-              key={pokemon.name}
-              searchKeyword={searchKeyword}
-              otherCardInfo={pokemon}
-            />
+          {data?.pages?.map((data, i) => (
+            <React.Fragment key={i}>
+              {data?.otherCardInfo.map((pokemon) => (
+                <PokemonCard
+                  key={pokemon.name}
+                  searchKeyword={searchKeyword}
+                  otherCardInfo={pokemon}
+                />
+              ))}
+            </React.Fragment>
           ))}
+
+          {hasNextPage && (
+            <div ref={ref}>
+              {isFetchingNextPage ? 'Loading more...' : 'Load More'}
+            </div>
+          )}
         </div>
+
         <div
           className={`hidden text-center text-2xl font-bold text-slate-800 peer-empty:grid`}
         >
