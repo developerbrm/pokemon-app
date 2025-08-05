@@ -31,4 +31,8 @@ const PokemonCard = (props: PokemonCard) => {
   )
 }
 
+export const LoadingPokemonCard = () => (
+  <div className="h-[200px] w-full animate-pulse rounded-md bg-slate-400 p-5 shadow-sm"></div>
+)
+
 export default PokemonCard
