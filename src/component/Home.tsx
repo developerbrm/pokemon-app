@@ -4,8 +4,9 @@ import { useInView } from 'react-intersection-observer'
 import { ScrollRestoration } from 'react-router'
 import { LIST_LIMIT } from '../../server/server-helpers'
 import { getPokemonList } from '../utilities/app-helpers'
+import CommonLoader from './CommonLoader'
 import Heading from './Heading'
-import PokemonCard, { LoadingPokemonCard } from './PokemonCard'
+import PokemonCard from './PokemonCard'
 import WithLoader from './WithLoader'
 
 const observerOptions = {
@@ -63,14 +64,10 @@ const Home = () => {
         </div>
 
         {hasNextPage && (
-          <div
-            className="mx-auto my-5 grid max-w-6xl grid-cols-1 gap-5 px-5 md:grid-cols-2 lg:grid-cols-3"
-            ref={ref}
-          >
-            {isFetchingNextPage &&
-              [...Array(window.innerWidth > 1024 ? 4 : 2)].map((_) => (
-                <LoadingPokemonCard key={_} />
-              ))}
+          <div className="py-20" ref={ref}>
+            {isFetchingNextPage && (
+              <CommonLoader className="mx-auto !h-full !w-full" />
+            )}
           </div>
         )}
 

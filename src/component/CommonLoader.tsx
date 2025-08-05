@@ -2,8 +2,8 @@ import { constructPubicMediaUrl } from '../utilities/app-helpers'
 
 const imageSrc = constructPubicMediaUrl('/pikachu.png')
 
-const CommonLoader = () => (
-  <div className="grid h-screen w-screen place-content-center">
+const CommonLoader = ({ className }: { className?: string }) => (
+  <div className={`${className} grid h-screen w-screen place-content-center`}>
     <div className="">
       <img
         src={imageSrc}
