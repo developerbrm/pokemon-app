@@ -21,7 +21,7 @@ const Home = () => {
       initialPageParam: 0,
       queryFn: ({ pageParam = 0 }) =>
         getPokemonList({ limit: LIST_LIMIT, offset: pageParam }),
-      getNextPageParam: (lastPage, allPages, lastPageParam) => {
+      getNextPageParam: (_lastPage, _allPages, lastPageParam) => {
         return lastPageParam + LIST_LIMIT
       },
     })
