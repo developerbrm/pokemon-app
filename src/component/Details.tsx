@@ -46,7 +46,7 @@ const Details = () => {
         <div className="grid gap-5 lg:grid-cols-[1fr_auto]">
           <div className="mx-auto aspect-square w-[300px] rounded-full bg-gradient-to-b from-lime-300 to-white to-[300px] md:w-[350px] lg:order-2 lg:w-[400px]">
             <img
-              className="h-full w-full object-contain drop-shadow-md"
+              className="h-full w-full object-contain drop-shadow-lg/40"
               src={pokemon?.sprites.other['official-artwork'].front_default}
               alt={pokemon?.name}
             />
