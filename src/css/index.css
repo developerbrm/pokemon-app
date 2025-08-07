@@ -1,3 +1,9 @@
 @import './fonts.css';
 @import './animation.css';
 @import 'tailwindcss';
+
+@layer base {
+  .text-gradient {
+    @apply bg-gradient-to-r from-slate-900 to-slate-600 bg-clip-text text-transparent;
+  }
+}
