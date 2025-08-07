@@ -35,8 +35,8 @@ const Home = () => {
   return (
     <WithLoader isLoading={isLoading}>
       <div>
-        <Heading text="Pokemon List" />
-        <div className="flex w-full flex-wrap gap-4 p-5 md:items-center md:justify-center">
+        <Heading className="mx-auto w-fit" text="Pokemon List" />
+        {/* <div className="flex w-full flex-wrap gap-4 p-5 md:items-center md:justify-center">
           <strong className="">Filter Pokemon :</strong>
 
           <input
@@ -46,7 +46,7 @@ const Home = () => {
             placeholder="type to search"
             className="block w-full rounded-md border-2 border-slate-600 p-4 py-2 text-base leading-8 text-gray-700 transition-colors duration-200 ease-in-out outline-none focus:border-sky-500 md:max-w-xs"
           />
-        </div>
+        </div> */}
 
         <div className="peer mx-auto my-5 grid max-w-6xl grid-cols-1 gap-5 px-5 md:grid-cols-2 lg:grid-cols-3">
           {data?.pages?.map((data, i) => (
