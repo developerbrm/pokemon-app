@@ -21,7 +21,7 @@ const PokemonCard = (props: PokemonCard) => {
       to={getDetailsPageRoute({ id: otherCardInfo.id })}
     >
       <div className="grid h-[200px] grid-flow-col justify-between rounded-md bg-slate-200 p-5 shadow-sm">
-        <h3 className="text-2xl font-bold text-slate-900 capitalize">
+        <h3 className="text-gradient from-slate-950 to-slate-700 text-2xl font-bold capitalize">
           {otherCardInfo?.name}
         </h3>
 

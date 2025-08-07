@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
-import { useRef } from 'react'
 import { IoIosArrowBack } from 'react-icons/io'
-import { NavLink, ScrollRestoration, useParams } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import { GetPokemonDetailsParams } from '../../server/types'
 import { ROUTES } from '../Routes/routes'
 import { getPokemonDetails } from '../utilities/app-helpers'
@@ -9,28 +8,39 @@ import FeaturedPokemons from './FeaturedPokemons'
 import Heading from './Heading'
 import WithLoader from './WithLoader'
 
+const abilitiesMovesOuterClasses = `rounded-md bg-gradient-to-r from-indigo-700/10 to-indigo-500/10 p-2 py-1 `
+const abilitiesMovesClasses =
+  'flex gap-2 font-medium text-gradient from-indigo-700 to-indigo-500'
+
 const Details = () => {
   const params = useParams<GetPokemonDetailsParams>()
   const { id = '0' } = params
+  const navigate = useNavigate()
 
-  const containerRef = useRef<HTMLDivElement>(null)
+  const handleBackClick = () => {
+    if (window.history.length > 2) {
+      navigate(-1)
+    } else {
+      navigate(ROUTES.HOME)
+    }
+  }
 
-  const { data: pokemon, isPending } = useQuery({
+  const { data: pokemon, isLoading } = useQuery({
     queryKey: [id],
     queryFn: () => getPokemonDetails({ id }),
   })
 
   return (
-    <WithLoader isLoading={isPending}>
-      <section ref={containerRef} className="mx-auto max-w-6xl p-5">
+    <WithLoader isLoading={isLoading}>
+      <section className="mx-auto max-w-6xl p-5">
         <div className="relative my-5 flex w-full items-center justify-start gap-2 text-start">
-          <NavLink
+          <button
             title="Go back to home"
-            className="inline-block rounded-md bg-blue-50 p-2 font-medium text-blue-500 transition hover:bg-blue-500 hover:text-white lg:absolute lg:top-1/2 lg:-left-12 lg:-translate-y-1/2"
-            to={ROUTES.HOME}
+            className="inline-block cursor-pointer rounded-md bg-blue-50 p-2 font-medium text-blue-500 transition hover:bg-blue-500 hover:text-white lg:absolute lg:top-1/2 lg:-left-12 lg:-translate-y-1/2"
+            onClick={handleBackClick}
           >
             <IoIosArrowBack size={20} />
-          </NavLink>
+          </button>
           <Heading className="!m-0" text={pokemon?.name ?? ''} />
         </div>
         <div className="grid gap-5 lg:grid-cols-[1fr_auto]">
@@ -41,20 +51,23 @@ const Details = () => {
               alt={pokemon?.name}
             />
           </div>
-          <div className="grid items-start gap-2 text-slate-600 lg:order-1">
+          <div className="grid items-start gap-2 text-slate-700 lg:order-1">
             <div className="flex flex-wrap items-center gap-2 gap-x-6">
               <div>
-                <strong>Height:</strong> {pokemon?.height}
+                <strong className="text-slate-800">Height:</strong>{' '}
+                {pokemon?.height}
               </div>
               <div>
-                <strong>Species:</strong> {pokemon?.species.name}
+                <strong className="text-slate-800">Species:</strong>{' '}
+                {pokemon?.species.name}
               </div>
               <div>
-                <strong>Weight:</strong> {pokemon?.weight} kg
+                <strong className="text-slate-800">Weight:</strong>{' '}
+                {pokemon?.weight} kg
               </div>
               {pokemon?.stats.map((stat) => (
                 <div key={stat.stat.name} className="flex gap-2">
-                  <strong>
+                  <strong className="text-slate-800">
                     {stat.stat.name.charAt(0).toUpperCase() +
                       stat.stat.name.slice(1)}
                     :
@@ -64,26 +77,30 @@ const Details = () => {
               ))}
             </div>
             <div className="mt-5 flex flex-wrap items-center gap-2 text-nowrap">
-              <strong>Abilities:</strong>
+              <strong className="text-slate-800">Abilities:</strong>
               <div className="flex gap-2">
                 {pokemon?.abilities.map((ability) => (
                   <span
                     key={ability.ability.name}
-                    className="flex gap-2 rounded-md bg-blue-100 p-2 py-1 font-medium text-blue-500"
+                    className={abilitiesMovesOuterClasses}
                   >
-                    {ability.ability.name}
+                    <span className={abilitiesMovesClasses}>
+                      {ability.ability.name}
+                    </span>
                   </span>
                 ))}
               </div>
             </div>
             <div className="flex flex-wrap items-center gap-2 text-nowrap">
-              <strong>Moves:</strong>
+              <strong className="text-slate-800">Moves:</strong>
               {pokemon?.moves.map((move) => (
                 <span
                   key={move.move.name}
-                  className="flex gap-2 rounded-md bg-blue-100 p-2 py-1 font-medium text-blue-500"
+                  className={abilitiesMovesOuterClasses}
                 >
-                  {move.move.name}
+                  <span className={abilitiesMovesClasses}>
+                    {move.move.name}
+                  </span>
                 </span>
               ))}
             </div>
@@ -93,18 +110,17 @@ const Details = () => {
           <FeaturedPokemons id={id} />
 
           <div className="mx-auto mt-10 flex justify-center md:mt-18">
-            <NavLink
+            <button
               title="Go back to home"
-              className="mx-auto flex w-fit items-center justify-center gap-1 rounded-md bg-blue-50 p-4 py-2 font-medium text-blue-500 transition hover:bg-blue-500 hover:text-white"
-              to={ROUTES.HOME}
+              className="mx-auto flex w-fit cursor-pointer items-center justify-center gap-1 rounded-md bg-blue-50 p-4 py-2 font-medium text-blue-500 transition hover:bg-blue-500 hover:text-white"
+              onClick={handleBackClick}
             >
               <IoIosArrowBack />
 
               <span>Back to home</span>
-            </NavLink>
+            </button>
           </div>
         </div>
-        <ScrollRestoration />
       </section>
     </WithLoader>
   )

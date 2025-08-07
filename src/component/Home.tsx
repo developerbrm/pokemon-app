@@ -1,7 +1,6 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
 import React, { useEffect, useState } from 'react'
 import { useInView } from 'react-intersection-observer'
-import { ScrollRestoration } from 'react-router'
 import { LIST_LIMIT } from '../../server/server-helpers'
 import { getPokemonList } from '../utilities/app-helpers'
 import CommonLoader from './CommonLoader'
@@ -76,8 +75,6 @@ const Home = () => {
         >
           No Results To Show
         </div>
-
-        <ScrollRestoration />
       </div>
     </WithLoader>
   )
