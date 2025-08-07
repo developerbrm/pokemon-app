@@ -1,17 +1,37 @@
-import { createBrowserRouter, RouterProvider } from 'react-router'
+import {
+  createBrowserRouter,
+  Outlet,
+  RouterProvider,
+  ScrollRestoration,
+} from 'react-router'
 import Component404 from '../component/Component404'
 import Details from '../component/Details'
 import Home from '../component/Home'
 import { ROUTES } from './routes'
 
+const RootLayout = () => {
+  return (
+    <>
+      <ScrollRestoration />
+      <Outlet />
+    </>
+  )
+}
+
 const router = createBrowserRouter([
   {
     path: ROUTES.HOME,
-    Component: Home,
-  },
-  {
-    path: ROUTES.DETAILS,
-    Component: Details,
+    element: <RootLayout />,
+    children: [
+      {
+        index: true,
+        element: <Home />,
+      },
+      {
+        path: ROUTES.DETAILS,
+        element: <Details />,
+      },
+    ],
   },
   {
     path: '*',

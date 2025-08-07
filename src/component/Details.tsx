@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { useRef } from 'react'
 import { IoIosArrowBack } from 'react-icons/io'
-import { NavLink, ScrollRestoration, useParams } from 'react-router'
+import { NavLink, useParams } from 'react-router'
 import { GetPokemonDetailsParams } from '../../server/types'
 import { ROUTES } from '../Routes/routes'
 import { getPokemonDetails } from '../utilities/app-helpers'
@@ -104,7 +104,6 @@ const Details = () => {
             </NavLink>
           </div>
         </div>
-        <ScrollRestoration />
       </section>
     </WithLoader>
   )
