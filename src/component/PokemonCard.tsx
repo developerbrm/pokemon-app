@@ -5,12 +5,12 @@ import RenderOtherCardInfo from './RenderOtherCardInfo'
 
 interface PokemonCard {
   otherCardInfo: PokemonOtherCardInfoData
-  searchKeyword: string
+  searchKeyword?: string
   handleOnClick?: () => void
 }
 
 const PokemonCard = (props: PokemonCard) => {
-  const { otherCardInfo, searchKeyword, handleOnClick } = props
+  const { otherCardInfo, searchKeyword = '', handleOnClick } = props
 
   if (!otherCardInfo.name.includes(searchKeyword)) return null
 

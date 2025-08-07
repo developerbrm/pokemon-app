@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useInView } from 'react-intersection-observer'
 import { LIST_LIMIT } from '../../server/server-helpers'
 import { getPokemonList } from '../utilities/app-helpers'
@@ -13,7 +13,7 @@ const observerOptions = {
 }
 
 const Home = () => {
-  const [searchKeyword, setSearchKeyword] = useState('')
+  // const [searchKeyword, setSearchKeyword] = useState('')
   const { ref, inView } = useInView(observerOptions)
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteQuery({
@@ -54,7 +54,7 @@ const Home = () => {
               {data?.otherCardInfo.map((pokemon) => (
                 <PokemonCard
                   key={pokemon.name}
-                  searchKeyword={searchKeyword}
+                  // searchKeyword={searchKeyword}
                   otherCardInfo={pokemon}
                 />
               ))}
