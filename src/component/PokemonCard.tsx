@@ -20,7 +20,7 @@ const PokemonCard = (props: PokemonCard) => {
       onClick={handleOnClick}
       to={getDetailsPageRoute({ id: otherCardInfo.id })}
     >
-      <div className="grid h-[200px] grid-flow-col justify-between rounded-md bg-slate-200 p-5 shadow-sm">
+      <div className="grid h-[200px] grid-flow-col justify-between rounded-md bg-gradient-to-br from-blue-50 to-slate-200 p-5 shadow-sm transition-all hover:scale-102 hover:brightness-102 hover:contrast-102">
         <h3 className="text-gradient from-slate-950 to-slate-700 text-2xl font-bold capitalize">
           {otherCardInfo?.name}
         </h3>
