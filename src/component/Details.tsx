@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { IoIosArrowBack } from 'react-icons/io'
 import { useNavigate, useParams } from 'react-router'
 import { GetPokemonDetailsParams } from '../../server/types'
+import { ROUTES } from '../Routes/routes'
 import { getPokemonDetails } from '../utilities/app-helpers'
 import FeaturedPokemons from './FeaturedPokemons'
 import Heading from './Heading'
@@ -17,7 +18,11 @@ const Details = () => {
   const navigate = useNavigate()
 
   const handleBackClick = () => {
-    navigate(-1)
+    if (window.history.length > 2) {
+      navigate(-1)
+    } else {
+      navigate(ROUTES.HOME)
+    }
   }
 
   const { data: pokemon, isLoading } = useQuery({
