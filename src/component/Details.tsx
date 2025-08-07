@@ -7,6 +7,10 @@ import FeaturedPokemons from './FeaturedPokemons'
 import Heading from './Heading'
 import WithLoader from './WithLoader'
 
+const abilitiesMovesOuterClasses = `rounded-md bg-gradient-to-r from-indigo-700/10 to-indigo-500/10 p-2 py-1 `
+const abilitiesMovesClasses =
+  'flex gap-2 font-medium text-gradient from-indigo-700 to-indigo-500'
+
 const Details = () => {
   const params = useParams<GetPokemonDetailsParams>()
   const { id = '0' } = params
@@ -42,20 +46,23 @@ const Details = () => {
               alt={pokemon?.name}
             />
           </div>
-          <div className="grid items-start gap-2 text-slate-600 lg:order-1">
+          <div className="grid items-start gap-2 text-slate-700 lg:order-1">
             <div className="flex flex-wrap items-center gap-2 gap-x-6">
               <div>
-                <strong>Height:</strong> {pokemon?.height}
+                <strong className="text-slate-800">Height:</strong>{' '}
+                {pokemon?.height}
               </div>
               <div>
-                <strong>Species:</strong> {pokemon?.species.name}
+                <strong className="text-slate-800">Species:</strong>{' '}
+                {pokemon?.species.name}
               </div>
               <div>
-                <strong>Weight:</strong> {pokemon?.weight} kg
+                <strong className="text-slate-800">Weight:</strong>{' '}
+                {pokemon?.weight} kg
               </div>
               {pokemon?.stats.map((stat) => (
                 <div key={stat.stat.name} className="flex gap-2">
-                  <strong>
+                  <strong className="text-slate-800">
                     {stat.stat.name.charAt(0).toUpperCase() +
                       stat.stat.name.slice(1)}
                     :
@@ -65,26 +72,30 @@ const Details = () => {
               ))}
             </div>
             <div className="mt-5 flex flex-wrap items-center gap-2 text-nowrap">
-              <strong>Abilities:</strong>
+              <strong className="text-slate-800">Abilities:</strong>
               <div className="flex gap-2">
                 {pokemon?.abilities.map((ability) => (
                   <span
                     key={ability.ability.name}
-                    className="flex gap-2 rounded-md bg-blue-100 p-2 py-1 font-medium text-blue-500"
+                    className={abilitiesMovesOuterClasses}
                   >
-                    {ability.ability.name}
+                    <span className={abilitiesMovesClasses}>
+                      {ability.ability.name}
+                    </span>
                   </span>
                 ))}
               </div>
             </div>
             <div className="flex flex-wrap items-center gap-2 text-nowrap">
-              <strong>Moves:</strong>
+              <strong className="text-slate-800">Moves:</strong>
               {pokemon?.moves.map((move) => (
                 <span
                   key={move.move.name}
-                  className="flex gap-2 rounded-md bg-blue-100 p-2 py-1 font-medium text-blue-500"
+                  className={abilitiesMovesOuterClasses}
                 >
-                  {move.move.name}
+                  <span className={abilitiesMovesClasses}>
+                    {move.move.name}
+                  </span>
                 </span>
               ))}
             </div>

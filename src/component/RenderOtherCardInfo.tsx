@@ -3,17 +3,20 @@ import type { PokemonOtherCardInfoData } from '../../server/types'
 const RenderOtherCardInfo = (otherCardInfo: PokemonOtherCardInfoData) => {
   return (
     <div className="col-span-2 row-start-2 grid w-full grid-flow-col justify-between">
-      <div className="gap-2 self-end text-slate-800">
+      <div className="gap-2 self-end text-slate-700">
         <div>
-          <strong>Height:</strong> {otherCardInfo?.height}
+          <strong className="text-slate-800">Height:</strong>{' '}
+          {otherCardInfo?.height}
         </div>
 
         <div>
-          <strong>Species:</strong> {otherCardInfo?.species.name}
+          <strong className="text-slate-800">Species:</strong>{' '}
+          {otherCardInfo?.species.name}
         </div>
 
         <div>
-          <strong>Weight:</strong> {otherCardInfo?.weight} kg
+          <strong className="text-slate-800">Weight:</strong>{' '}
+          {otherCardInfo?.weight} kg
         </div>
       </div>
       <div className="aspect-square w-[120px]">
