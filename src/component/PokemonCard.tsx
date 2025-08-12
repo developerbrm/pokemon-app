@@ -19,8 +19,9 @@ const PokemonCard = (props: PokemonCard) => {
       title={`click to see ${otherCardInfo.name} details`}
       onClick={handleOnClick}
       to={getDetailsPageRoute({ id: otherCardInfo.id })}
+      className="group border-0 ring-0 outline-0"
     >
-      <div className="grid h-[200px] grid-flow-col justify-between rounded-md bg-gradient-to-br from-blue-50 to-slate-200 p-5 shadow-sm transition-all hover:scale-102 hover:brightness-102 hover:contrast-102">
+      <div className="grid h-[200px] grid-flow-col justify-between rounded-md bg-gradient-to-br from-blue-50 to-slate-200 p-5 shadow-sm ring-slate-600 transition-all group-hover:scale-102 group-hover:brightness-102 group-hover:contrast-102 group-focus:scale-102 group-focus:ring-2 group-focus:brightness-102 group-focus:contrast-102">
         <h3 className="text-gradient from-slate-950 to-slate-700 text-2xl font-bold capitalize">
           {otherCardInfo?.name}
         </h3>

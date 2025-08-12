@@ -49,14 +49,24 @@ Bun.serve({
               .then((res) => res.map((r) => r.value))
               .catch(console.error)) ?? ([] as PokemonData[])
 
-          pokemonList.otherCardInfo = allPokemonDetails.map((pokemon) => ({
-            height: pokemon.height,
-            name: pokemon.name,
-            weight: pokemon.weight,
-            sprites: pokemon.sprites,
-            species: pokemon.species,
-            id: pokemon.id,
-          }))
+          if (!allPokemonDetails.length || !pokemonList.results.length) {
+            return Response.json(null, {
+              ...GETResponseOptions,
+              status: 404,
+              statusText: 'Not Found',
+            })
+          }
+
+          pokemonList.otherCardInfo = allPokemonDetails
+            .filter((pokemon) => pokemon !== null)
+            .map((pokemon) => ({
+              height: pokemon.height,
+              name: pokemon.name,
+              weight: pokemon.weight,
+              sprites: pokemon.sprites,
+              species: pokemon.species,
+              id: pokemon.id,
+            }))
 
           return Response.json(pokemonList, GETResponseOptions)
         }
@@ -66,7 +76,7 @@ Bun.serve({
           const details = await fetchPokemonDetails(id)
 
           if (!details) {
-            return new Response(null, {
+            return Response.json(null, {
               ...GETResponseOptions,
               status: 404,
               statusText: 'Not Found',
@@ -85,10 +95,11 @@ Bun.serve({
           )
             .then((res) => res.filter((r) => r.status === 'fulfilled'))
             .then((res) => res.map((r) => r.value))
+            .then((res) => res.filter(Boolean))
             .catch(console.error)
 
           if (!otherPokemonDetailsArr?.length) {
-            return new Response(null, {
+            return Response.json(null, {
               ...GETResponseOptions,
               status: 404,
               statusText: 'Not Found',

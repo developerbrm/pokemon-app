@@ -16,15 +16,6 @@ const FeaturedPokemons = (props: Props) => {
     queryFn: () => getFeaturedPokemons({ id }),
   })
 
-  // const scrollToTop = useCallback(() => {
-  //   if (containerRef.current) {
-  //     containerRef.current.scrollTo({
-  //       top: 0,
-  //       behavior: 'smooth',
-  //     })
-  //   }
-  // }, [containerRef])
-
   return (
     <WithLoader isLoading={isPending}>
       <div
@@ -35,10 +26,9 @@ const FeaturedPokemons = (props: Props) => {
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
         {featuredPokemonArr?.map((pokemon) => (
           <PokemonCard
-            key={pokemon.name}
+            key={pokemon?.name}
             searchKeyword={''}
             otherCardInfo={pokemon}
-            // handleOnClick={scrollToTop}
           />
         ))}
       </div>

@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import { appendSlash, removeStartSlash } from '.'
 import { API_ROUTES, getServerPort } from '../../server/server-helpers'
 import type {
@@ -45,27 +45,27 @@ export const getPokemonList = async (params?: GetPokemonListParams) => {
 }
 
 export const getPokemonDetails = async (params?: GetPokemonDetailsParams) => {
-  try {
-    const url = constructApiUrl(API_ROUTES.GET_POKEMON_DETAILS)
-    const res = await axios.get<PokemonData>(url, { params })
+  const url = constructApiUrl(API_ROUTES.GET_POKEMON_DETAILS)
 
-    return res.data
-  } catch (error) {
-    console.log(error)
+  return await axios
+    .get<PokemonData>(url, { params })
+    .then((res) => res.data)
+    .catch((err: AxiosError) => {
+      console.log(err.response?.data)
 
-    return null
-  }
+      throw new Error(err.message)
+    })
 }
 
 export const getFeaturedPokemons = async (params?: GetFeaturedPokemons) => {
-  try {
-    const url = constructApiUrl(API_ROUTES.GET_FEATURED_POKEMONS)
-    const res = await axios.get<PokemonData[]>(url, { params })
+  const url = constructApiUrl(API_ROUTES.GET_FEATURED_POKEMONS)
 
-    return res.data
-  } catch (error) {
-    console.log(error)
+  return await axios
+    .get<PokemonData[]>(url, { params })
+    .then((res) => res.data)
+    .catch((err: AxiosError) => {
+      console.log(err.response?.data)
 
-    return null
-  }
+      throw new Error(err.message)
+    })
 }

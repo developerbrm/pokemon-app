@@ -7,6 +7,7 @@ import { getPokemonDetails } from '../utilities/app-helpers'
 import FeaturedPokemons from './FeaturedPokemons'
 import Heading from './Heading'
 import WithLoader from './WithLoader'
+import { capitalizeFirstLetter } from '../utilities'
 
 const abilitiesMovesOuterClasses = `rounded-md bg-gradient-to-r from-indigo-700/10 to-indigo-500/10 p-2 py-1 `
 const abilitiesMovesClasses =
@@ -25,10 +26,35 @@ const Details = () => {
     }
   }
 
-  const { data: pokemon, isLoading } = useQuery({
+  const {
+    data: pokemon,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: [id],
     queryFn: () => getPokemonDetails({ id }),
   })
+
+  if (error || (!pokemon && !isLoading)) {
+    setTimeout(() => {
+      navigate(ROUTES.HOME)
+    }, 5000)
+
+    return (
+      <div className="mx-auto grid h-screen place-content-center bg-slate-300 p-10 text-center">
+        <div className="mx-auto max-w-prose">
+          <h1 className="text-gradient mb-2 text-4xl font-bold">
+            We could not find this pokemon
+          </h1>
+          <p className="text-lg">Flying you to the home page in 5 seconds 🚀</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (pokemon) {
+    document.title = `${capitalizeFirstLetter(pokemon.name)} | Pokemon App`
+  }
 
   return (
     <WithLoader isLoading={isLoading}>

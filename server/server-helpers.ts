@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import type {
   GetPokemonListParams,
   PokemonData,
@@ -51,15 +51,18 @@ export const fetchPokemonList = async (params: GetPokemonListParams) =>
   axios
     .get<PokemonListResponse>(GET_POKEMON_LIST(params))
     .then((res) => res.data)
-    .catch((err) => {
-      throw new Error(err)
+    .catch((err: AxiosError) => {
+      throw new Error(err.message)
     })
 
 export const fetchPokemonDetails = async (id: string) =>
   await axios
     .get<PokemonData>(GET_SINGLE_POKEMON(id))
     .then((res) => res.data)
-    .catch((err) => {
-      console.log(err)
-      throw new Error(err)
+    .catch((err: AxiosError) => {
+      if (err.response?.status === 404) {
+        return null
+      }
+
+      throw new Error(err.message)
     })

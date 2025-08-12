@@ -32,6 +32,10 @@ const Home = () => {
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage])
 
+  if (data) {
+    document.title = `Pokemon App`
+  }
+
   return (
     <WithLoader isLoading={isLoading}>
       <div>
