@@ -7,6 +7,7 @@ import { getPokemonDetails } from '../utilities/app-helpers'
 import FeaturedPokemons from './FeaturedPokemons'
 import Heading from './Heading'
 import WithLoader from './WithLoader'
+import { capitalizeFirstLetter } from '../utilities'
 
 const abilitiesMovesOuterClasses = `rounded-md bg-gradient-to-r from-indigo-700/10 to-indigo-500/10 p-2 py-1 `
 const abilitiesMovesClasses =
@@ -49,6 +50,10 @@ const Details = () => {
         </div>
       </div>
     )
+  }
+
+  if (pokemon) {
+    document.title = `${capitalizeFirstLetter(pokemon.name)} | Pokemon App`
   }
 
   return (
