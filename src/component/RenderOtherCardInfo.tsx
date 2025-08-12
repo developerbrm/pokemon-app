@@ -23,7 +23,10 @@ const RenderOtherCardInfo = (otherCardInfo: PokemonOtherCardInfoData) => {
         <img
           loading="lazy"
           className="h-full w-full object-contain drop-shadow-lg/30"
-          src={otherCardInfo?.sprites.other['showdown'].front_default}
+          src={
+            otherCardInfo?.sprites?.other['showdown']?.front_default ??
+            otherCardInfo?.sprites?.other['official-artwork'].front_default
+          }
           alt={otherCardInfo?.name}
         />
       </div>
